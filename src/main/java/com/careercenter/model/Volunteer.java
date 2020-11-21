@@ -65,12 +65,11 @@ public class Volunteer {
 	@Column(name = "industry")
 	private String industry;
 
-	@NotNull(message = "Other Industries cannot be null.")
 	@Column(name = "other_industries")
 	private Set<String> otherIndustries;
 	
 	@NotNull(message = "Years of experience cannot be null.")
-	@Column(name = "years_experience")
+	@Column(name = "experience")
 	private int yearsOfExperience;
 	
 	@Column(name = "languages")

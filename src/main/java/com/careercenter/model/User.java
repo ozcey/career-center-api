@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -32,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1, initialValue = 10001)
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
 	private Long id;
@@ -42,11 +44,13 @@ public class User {
 	@Column(name = "name")
 	private String name;
 
+	@NaturalId
 	@Size(min = 3, max = 50, message = "Username must be at least 2 characters.")
 	@NotNull(message = "Username cannot be null")
 	@Column(name = "username", unique = true)
 	private String username;
 
+	@NaturalId
 	@Email(message = "Please enter a valid email.")
 	@NotNull(message = "Email cannot be null")
 	@Column(name = "email", unique = true)
@@ -63,13 +67,13 @@ public class User {
 //			inverseJoinColumns = @JoinColumn(name = "role_id"))
 //	private Set<Role> roles = new HashSet<Role>();
 
-	public User(Long id, String name, String username, String email, String password) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-	}
+//	public User(Long id, String name, String username, String email, String password) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.username = username;
+//		this.email = email;
+//		this.password = password;
+//	}
 
 }

@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    platform: postgres
+    username: postgres
+    password: Password
+    url: jdbc:postgresql://localhost:5432/career-db
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate.show_sql: false
+      hibernate.use_sql_comments: false
+      hibernate.format_sql: false
+      
+server:
+   port: 5000
+   servlet:
+     context-path: /cc/api
+
+
+
+

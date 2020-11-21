@@ -58,8 +58,8 @@ public class Applicant {
 	private String phone;
 
 	@NotNull(message = "Area of Interest cannot be null.")
-	@Column(name = "areas_of_interest")
-	private String areaOfInterest;
+	@Column(name = "area_of_interest")
+	private Set<String> areaOfInterest;
 	
 	@NotNull(message = "Age cannot be null.")
 	@Column(name = "age")
