@@ -57,9 +57,9 @@ public class Applicant {
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull(message = "Area of Interest cannot be null.")
-	@Column(name = "area_of_interest")
-	private Set<String> areaOfInterest;
+	@NotNull(message = "Category cannot be null.")
+	@Column(name = "category")
+	private String[] category;
 	
 	@NotNull(message = "Age cannot be null.")
 	@Column(name = "age")
@@ -75,10 +75,10 @@ public class Applicant {
 	private String degree;
 	
 	@Column(name = "languages")
-	private Set<String> languages;
+	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
 	private Address address;
 
 }

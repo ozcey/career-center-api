@@ -1,5 +1,6 @@
 package com.careercenter.model;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.TypeDef;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "volunteers")
 @SequenceGenerator(name = "volunteers_id_seq", sequenceName = "volunteers_id_seq", allocationSize = 1, initialValue = 20001)
 public class Volunteer {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "volunteers_id_seq")
 	private Long volunteer_id;
@@ -66,18 +68,17 @@ public class Volunteer {
 	private String industry;
 
 	@Column(name = "other_industries")
-	private Set<String> otherIndustries;
-	
+	private String[] otherIndustries;
+
 	@NotNull(message = "Years of experience cannot be null.")
 	@Column(name = "experience")
 	private int yearsOfExperience;
-	
+
 	@Column(name = "languages")
-	private Set<String> languages;
+	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
 	private Address address;
-
 
 }

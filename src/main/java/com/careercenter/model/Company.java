@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "company")
+@Table(name = "companies")
 @SequenceGenerator(name = "company_id_seq", sequenceName = "company_id_seq", allocationSize = 1, initialValue = 1001)
 public class Company {
 	

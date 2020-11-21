@@ -29,7 +29,7 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
 	private Long address_id;
 
-	@Size(max = 50)
+	@Size(max = 100)
 	@NotNull(message = "Street cannot be null")
 	@Column(name = "street")
 	private String street;

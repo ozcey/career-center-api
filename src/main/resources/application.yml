@@ -3,7 +3,7 @@ spring:
     platform: postgres
     username: postgres
     password: Password
-    url: jdbc:postgresql://localhost:5432/career-db
+    url: jdbc:postgresql://localhost:5432/career_db
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
@@ -14,8 +14,4 @@ spring:
 server:
    port: 5000
    servlet:
-     context-path: /cc/api
-
-
-
-
+     context-path: /career-center/api
