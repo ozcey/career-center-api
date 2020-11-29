@@ -87,13 +87,13 @@ public class AuthController {
 				Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
 						.orElseThrow(() -> new NotFoundException("User role"));
 				roles.add(adminRole);
-			}
-			if ("ROLE_USER".equals(role)) {
+			} else if ("ROLE_USER".equals(role)) {
 				Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 						.orElseThrow(() -> new NotFoundException("User role"));
 				roles.add(userRole);
+			} else {
+				throw new NotFoundException("User role");
 			}
-			throw new NotFoundException("User role");
 		});
 		user.setRoles(roles);
 		userRepository.save(user);

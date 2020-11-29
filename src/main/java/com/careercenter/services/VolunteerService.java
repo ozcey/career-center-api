@@ -1,6 +1,5 @@
 package com.careercenter.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,6 @@ import com.careercenter.repositories.VolunteerRepository;
 
 @Service
 public class VolunteerService {
-//    TODO: update volunteer request(already done) and response, then try to create save and update
 
     @Autowired
     private VolunteerRepository volunteerRepository;
@@ -30,6 +28,12 @@ public class VolunteerService {
 
     @Autowired
     private OtherIndustryRepository otherIndustryRepository;
+
+    private CompanyService companyService;
+
+    public VolunteerService(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
     public List<Volunteer> findAllVolunteers() {
         return volunteerRepository.findAll();
@@ -65,7 +69,7 @@ public class VolunteerService {
         Volunteer volunteer = saveVolunteer(volunteerRequest);
         var id = volunteer.getId();
         List<OtherIndustry> otherIndustries = saveOtherIndustry(id, volunteerRequest.getOtherIndustry());
-        Company company = saveCompany(id, volunteerRequest.getCompany());
+        Company company = companyService.saveCompany(id, volunteerRequest.getCompany());
         List<VolunteerLanguage> vLanguages = saveVLanguage(id, volunteerRequest.getLanguages());
         return VolunteerResponse.builder()
                 .volunteer(volunteer)
@@ -123,21 +127,6 @@ public class VolunteerService {
                    vLanguageRepository.save(vLanguage);
                 });
                 return vLanguageRepository.findVLanguageByVolunteerId(volunteer.getId());
-            }).orElseThrow(NotFoundException::new);
-        }
-        throw new NotFoundException();
-    }
-
-    public Company saveCompany(Long volunteerId, Company company){
-        if(volunteerRepository.existsById(volunteerId)){
-            return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-                Company savedCompany = Company.builder()
-                        .name(company.getName())
-                        .city(company.getCity())
-                        .state(company.getState())
-                        .volunteer(volunteer)
-                        .build();
-                return companyRepository.save(savedCompany);
             }).orElseThrow(NotFoundException::new);
         }
         throw new NotFoundException();

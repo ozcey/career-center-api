@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Applicant Controller", description = "Applicant API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RequestMapping(value = "/applicant")
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 public class ApplicantController {
 
 	@Autowired
@@ -39,42 +40,36 @@ public class ApplicantController {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Retrieves All Applicants", description = "No need to pass parameters")
-		@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<Applicant>> retrieveAllApplicants() {
 		return ResponseEntity.ok().body(applicantService.findAllApplicants());
 	}
 
 	@GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Retrieves an Applicant By Id", description = "Need to pass Applicant id")
-	 @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Applicant> retrieveApplicantById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(applicantService.findApplicantById(id));
 	}
 
 	@GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Retrieves an Applicant By Email", description = "Need to pass Applicant email")
-	 @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Applicant> retrieveApplicantByEmail(@PathVariable String email) {
 		return ResponseEntity.ok().body(applicantService.findApplicantByEmail(email));
 	}
 
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a New Applicant", description = "Create a new Applicant by passing Applicant request")
-	// @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Applicant> createApplicant(@Valid @NotNull @RequestBody Applicant applicant) {
 		return ResponseEntity.ok().body(applicantService.saveApplicant(applicant));
 	}
 
 	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Update Applicant Data", description = "Applicant Id must be in request.")
-	// @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Applicant> updateApplicant(@Valid @NotNull @RequestBody Applicant Applicant) {
 		return ResponseEntity.ok().body(applicantService.saveApplicant(Applicant));
 	}
 
 	@DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Delete an Applicant By Id", description = "Need to pass Applicant id")
-	// @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ResponseMessage> deleteApplicant(@Valid @NotNull @PathVariable long id) {
 		return ResponseEntity.ok().body(applicantService.deleteApplicant(id));
 	}
