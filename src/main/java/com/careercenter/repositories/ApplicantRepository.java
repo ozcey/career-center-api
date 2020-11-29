@@ -12,8 +12,8 @@ import com.careercenter.model.Applicant;
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
-	@Query("select a from Applicant a where a.applicant_id = :id")
-	Optional<Applicant> findApplicantById(@Param("id") Long applicant_id);
+	@Query("select a from Applicant a where a.id = :id")
+	Optional<Applicant> findApplicantById(@Param("id") Long id);
 
 	@Query("select a from Applicant a where a.email = :email")
 	Optional<Applicant> findApplicantByEmail(@Param("email") String email);

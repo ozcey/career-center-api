@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +38,7 @@ public class Volunteer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "volunteers_id_seq")
-	private Long volunteer_id;
+	private Long id;
 
 	@Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
 	@NotNull(message = "First Name cannot be null.")
@@ -67,18 +68,18 @@ public class Volunteer {
 	@Column(name = "industry")
 	private String industry;
 
-	@Column(name = "other_industries")
-	private String[] otherIndustries;
+//	@Column(name = "other_industries")
+//	private String[] otherIndustries;
 
 	@NotNull(message = "Years of experience cannot be null.")
 	@Column(name = "experience")
 	private int yearsOfExperience;
 
-	@Column(name = "languages")
-	private String[] languages;
+//	@Column(name = "languages")
+//	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
+	@JoinColumn(name = "address_id", referencedColumnName = "id")
 	private Address address;
 
 }

@@ -14,8 +14,6 @@ import com.careercenter.repositories.ApplicantRepository;
 @Service
 public class ApplicantService {
 
-	private static final String message = "Applicant deleted successfully.";
-
 	@Autowired
 	private ApplicantRepository applicantRepository;
 
@@ -43,7 +41,7 @@ public class ApplicantService {
 	public ResponseMessage deleteApplicant(Long id) {
 		if (applicantRepository.existsById(id)) {
 			applicantRepository.deleteById(id);
-			return new ResponseMessage(message);
+			return new ResponseMessage("Applicant deleted successfully.");
 		}
 		throw new NotFoundException("id");
 	}

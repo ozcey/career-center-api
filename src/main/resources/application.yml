@@ -15,3 +15,7 @@ server:
    port: 5000
    servlet:
      context-path: /career-center/api
+
+app:
+  jwtSecret: jwtsecret
+  jwtExpiration: 604800000

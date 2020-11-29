@@ -35,7 +35,7 @@ public class Applicant {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "applicants_id_seq")
-	private Long applicant_id;
+	private Long id;
 
 	@Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
 	@NotNull(message = "First Name cannot be null.")
@@ -57,9 +57,9 @@ public class Applicant {
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull(message = "Category cannot be null.")
-	@Column(name = "category")
-	private String[] category;
+//	@NotNull(message = "Category cannot be null.")
+//	@Column(name = "category")
+//	private String[] category;
 	
 	@NotNull(message = "Age cannot be null.")
 	@Column(name = "age")
@@ -74,11 +74,11 @@ public class Applicant {
 	@Column(name = "degree")
 	private String degree;
 	
-	@Column(name = "languages")
-	private String[] languages;
+//	@Column(name = "languages")
+//	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
+	@JoinColumn(name = "address_id", referencedColumnName = "id")
 	private Address address;
 
 }

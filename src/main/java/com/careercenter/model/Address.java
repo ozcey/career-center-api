@@ -27,7 +27,7 @@ public class Address {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
-	private Long address_id;
+	private Long id;
 
 	@Size(max = 100)
 	@NotNull(message = "Street cannot be null")
