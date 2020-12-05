@@ -2,17 +2,11 @@ package com.careercenter.model;
 
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.util.List;
 
 @Builder
 @Data

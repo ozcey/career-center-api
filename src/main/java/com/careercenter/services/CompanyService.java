@@ -6,11 +6,13 @@ import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.VolunteerRepository;
 import com.careercenter.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class CompanyService {
 
@@ -25,6 +27,7 @@ public class CompanyService {
     }
 
     public Company saveCompany(Long volunteerId, Company company){
+        log.info("Company save request received.");
         if(volunteerRepository.existsById(volunteerId)){
             return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
                 Company savedCompany = Company.builder()
@@ -40,6 +43,7 @@ public class CompanyService {
     }
 
     public Company updateCompany(Long volunteerId, Company company){
+        log.info("Company update request received.");
         if(volunteerRepository.existsById(volunteerId)){
             return companyRepository.findById(company.getId()).map(updatedCompany -> {
                 updatedCompany.setName(company.getName());
@@ -52,6 +56,7 @@ public class CompanyService {
     }
 
     public ResponseMessage deleteCompanyById(Long companyId){
+        log.info("Company delete request received.");
         if (companyRepository.existsById(companyId)){
             companyRepository.deleteById(companyId);
             return new ResponseMessage(String.format("%s %s", Utils.CompanyID.getName(), Utils.DeleteMessage.getName()));

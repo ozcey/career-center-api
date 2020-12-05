@@ -1,11 +1,7 @@
 package com.careercenter.model;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +17,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

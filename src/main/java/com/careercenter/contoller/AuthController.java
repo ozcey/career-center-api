@@ -1,37 +1,20 @@
 package com.careercenter.contoller;
 
-import com.careercenter.utils.Utils;
+import com.careercenter.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.LoginRequest;
 import com.careercenter.model.LoginResponse;
 import com.careercenter.model.ResponseMessage;
-import com.careercenter.model.Role;
-import com.careercenter.model.RoleName;
 import com.careercenter.model.SignUpRequest;
-import com.careercenter.model.User;
-import com.careercenter.repositories.RoleRepository;
-import com.careercenter.repositories.UserRepository;
-import com.careercenter.security.JWTTokenProvider;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Tag(name = "Auth Controller", description = "Auth API")
@@ -41,64 +24,18 @@ import com.careercenter.security.JWTTokenProvider;
 public class AuthController {
 
 	@Autowired
-	AuthenticationManager authManager;
-
-	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	RoleRepository roleRepository;
-
-	@Autowired
-	PasswordEncoder passwordEncoder;
-
-	@Autowired
-	JWTTokenProvider jwtProvider;
+	private AuthService authService;
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Log in to Account", description = "username = admin and password = password")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-		Authentication authentication = authManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtProvider.generateJWTToken(authentication);
-		return ResponseEntity.ok(new LoginResponse(jwt));
+	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+		return authService.login(loginRequest);
 	}
 
 	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create an Account", description = "Password must be at least 8 characters and "
 			+ "username must be at least 3 characters ")
 	public ResponseEntity<ResponseMessage> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
-		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return new ResponseEntity<>(new ResponseMessage(Utils.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
-		}
-
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return new ResponseEntity<>(new ResponseMessage(Utils.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
-		}
-
-		User user = User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
-				.email(signUpRequest.getEmail()).password(passwordEncoder.encode(signUpRequest.getPassword())).build();
-
-		Set<String> sRoles = signUpRequest.getRoles();
-		Set<Role> roles = new HashSet<>();
-
-		sRoles.forEach(role -> {
-			if (Utils.RoleAdmin.getName().equals(role)) {
-				Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-						.orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
-				roles.add(adminRole);
-			} else if (Utils.RoleUser.getName().equals(role)) {
-				Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-						.orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
-				roles.add(userRole);
-			} else {
-				throw new NotFoundException(Utils.UserRole.getName());
-			}
-		});
-		user.setRoles(roles);
-		userRepository.save(user);
-		return ResponseEntity.ok(new ResponseMessage(Utils.SignupMessage.getName()));
+		return authService.signup(signUpRequest);
 	}
-
 }

@@ -7,12 +7,14 @@ import java.util.Optional;
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.repositories.VolunteerRepository;
 
+@Slf4j
 @Service
 public class VolunteerService {
 
@@ -48,6 +50,7 @@ public class VolunteerService {
     }
 
     public VolunteerResponse createVolunteer(VolunteerRequest volunteerRequest){
+        log.info("Volunteer create request received.");
         Volunteer volunteer = saveVolunteer(volunteerRequest);
         var id = volunteer.getId();
         Company company = companyService.saveCompany(id, volunteerRequest.getCompany());
@@ -58,6 +61,7 @@ public class VolunteerService {
     }
 
     private Volunteer saveVolunteer(VolunteerRequest volunteerRequest){
+        log.info("Volunteer save request received.");
         Optional<VolunteerRequest> vRequest = Optional.ofNullable(volunteerRequest);
         if(vRequest.isPresent()){
             Volunteer volunteer = Volunteer.builder()
@@ -83,6 +87,7 @@ public class VolunteerService {
     }
 
     public Volunteer updateVolunteer(Volunteer volunteer) {
+        log.info("Volunteer update request received.");
         Optional<Volunteer> optionalVolunteer = Optional.ofNullable(volunteer);
         if (optionalVolunteer.isPresent()) {
             return volunteerRepository.save(volunteer);
@@ -91,6 +96,7 @@ public class VolunteerService {
     }
 
     public ResponseMessage deleteVolunteer(Long volunteerId) {
+        log.info("Volunteer delete request received.");
         if (volunteerRepository.existsById(volunteerId)) {
             volunteerRepository.deleteById(volunteerId);
             return new ResponseMessage(String.format("%s %s", Utils.VolunteerID.getName(), Utils.DeleteMessage.getName()));

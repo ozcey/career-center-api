@@ -5,6 +5,7 @@ import com.careercenter.model.ResponseMessage;
 import com.careercenter.model.User;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -41,6 +43,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        log.info("User update request received.");
         if (userRepository.existsById(user.getId())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
@@ -49,6 +52,7 @@ public class UserService {
     }
 
     public ResponseMessage deleteUser(Long  userId) {
+        log.info("User delete request received.");
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
             return new ResponseMessage(String.format("%s %s", Utils.UserID.getName(), Utils.DeleteMessage.getName()));
