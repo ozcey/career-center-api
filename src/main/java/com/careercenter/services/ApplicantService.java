@@ -3,6 +3,7 @@ package com.careercenter.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.careercenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,13 @@ public class ApplicantService {
 		return applicantRepository.findAll();
 	}
 
-	public Applicant findApplicantById(Long applicant_id) {
-		return applicantRepository.findApplicantById(applicant_id)
-				.orElseThrow(() -> new NotFoundException("applicant_id"));
+	public Applicant findApplicantById(Long applicantDd) {
+		return applicantRepository.findApplicantById(applicantDd)
+				.orElseThrow(() -> new NotFoundException(Utils.ApplicantID.getName()));
 	}
 
 	public Applicant findApplicantByEmail(String email) {
-		return applicantRepository.findApplicantByEmail(email).orElseThrow(() -> new NotFoundException("email"));
+		return applicantRepository.findApplicantByEmail(email).orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
 	}
 
 	public Applicant saveApplicant(Applicant applicant) {
@@ -38,12 +39,13 @@ public class ApplicantService {
 		throw new NotFoundException();
 	}
 
-	public ResponseMessage deleteApplicant(Long id) {
-		if (applicantRepository.existsById(id)) {
-			applicantRepository.deleteById(id);
-			return new ResponseMessage("Applicant deleted successfully.");
+	public ResponseMessage deleteApplicant(Long applicantId) {
+		if (applicantRepository.existsById(applicantId)) {
+			applicantRepository.deleteById(applicantId);
+			return new ResponseMessage(String.format("%s %s", Utils.ApplicantID.getName(), Utils.DeleteMessage.getName()));
+
 		}
-		throw new NotFoundException("id");
+		throw new NotFoundException(Utils.ApplicantID.getName());
 	}
 
 }

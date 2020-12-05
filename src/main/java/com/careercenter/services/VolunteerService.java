@@ -8,6 +8,7 @@ import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.OtherIndustryRepository;
 import com.careercenter.repositories.VLanguageRepository;
+import com.careercenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,8 @@ public class VolunteerService {
     @Autowired
     private OtherIndustryRepository otherIndustryRepository;
 
+    @Autowired
     private CompanyService companyService;
-
-    public VolunteerService(CompanyService companyService) {
-        this.companyService = companyService;
-    }
 
     public List<Volunteer> findAllVolunteers() {
         return volunteerRepository.findAll();
@@ -41,11 +39,11 @@ public class VolunteerService {
 
     public Volunteer findVolunteerById(Long volunteerId) {
         return volunteerRepository.findVolunteerById(volunteerId)
-                .orElseThrow(() -> new NotFoundException("volunteerId"));
+                .orElseThrow(() -> new NotFoundException(Utils.VolunteerID.getName()));
     }
 
     public Volunteer findVolunteerByEmail(String email) {
-        return volunteerRepository.findVolunteerByEmail(email).orElseThrow(() -> new NotFoundException("email"));
+        return volunteerRepository.findVolunteerByEmail(email).orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
     }
 
     public VolunteerResponse findVolunteerAndCompany(Long id) {
@@ -132,12 +130,12 @@ public class VolunteerService {
         throw new NotFoundException();
     }
 
-    public ResponseMessage deleteVolunteer(Long id) {
-        if (volunteerRepository.existsById(id)) {
-            volunteerRepository.deleteById(id);
-            return new ResponseMessage("Volunteer deleted successfully.");
+    public ResponseMessage deleteVolunteer(Long volunteerId) {
+        if (volunteerRepository.existsById(volunteerId)) {
+            volunteerRepository.deleteById(volunteerId);
+            return new ResponseMessage(String.format("%s %s", Utils.VolunteerID.getName(), Utils.DeleteMessage.getName()));
         }
-        throw new NotFoundException("id");
+        throw new NotFoundException(Utils.VolunteerID.getName());
     }
 
 }

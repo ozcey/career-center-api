@@ -3,6 +3,7 @@ package com.careercenter.exception;
 import com.careercenter.model.ErrorMessage;
 import com.careercenter.model.ErrorResponse;
 import com.careercenter.model.FieldError;
+import com.careercenter.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -89,7 +90,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ErrorMessage> handleAllException(Exception ex, WebRequest request) {
         log.error(ex.getLocalizedMessage(), ex);
         ErrorMessage errorMessage = ErrorMessage.builder()
-                .error("Server Error")
+                .error(Utils.ServerError.getName())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .timestamp(LocalDateTime.now())
                 .build();

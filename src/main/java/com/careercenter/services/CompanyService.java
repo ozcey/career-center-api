@@ -5,6 +5,7 @@ import com.careercenter.model.Company;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.VolunteerRepository;
+import com.careercenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,11 +51,11 @@ public class CompanyService {
         throw new NotFoundException();
     }
 
-    public ResponseMessage deleteCompanyById(Long id){
-        if (companyRepository.existsById(id)){
-            companyRepository.deleteById(id);
-            return new ResponseMessage("Company deleted successfully.");
+    public ResponseMessage deleteCompanyById(Long companyId){
+        if (companyRepository.existsById(companyId)){
+            companyRepository.deleteById(companyId);
+            return new ResponseMessage(String.format("%s %s", Utils.CompanyID.getName(), Utils.DeleteMessage.getName()));
         }
-        throw new NotFoundException();
+        throw new NotFoundException(Utils.CompanyID.getName());
     }
 }

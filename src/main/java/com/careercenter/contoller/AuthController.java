@@ -1,5 +1,6 @@
 package com.careercenter.contoller;
 
+import com.careercenter.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -69,11 +70,11 @@ public class AuthController {
 			+ "username must be at least 3 characters ")
 	public ResponseEntity<ResponseMessage> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return new ResponseEntity<>(new ResponseMessage("Username is already taken!"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ResponseMessage(Utils.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return new ResponseEntity<>(new ResponseMessage("Email is already in use!"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ResponseMessage(Utils.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
 		}
 
 		User user = User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
@@ -83,21 +84,21 @@ public class AuthController {
 		Set<Role> roles = new HashSet<>();
 
 		sRoles.forEach(role -> {
-			if ("ROLE_ADMIN".equals(role)) {
+			if (Utils.RoleAdmin.getName().equals(role)) {
 				Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-						.orElseThrow(() -> new NotFoundException("User role"));
+						.orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
 				roles.add(adminRole);
-			} else if ("ROLE_USER".equals(role)) {
+			} else if (Utils.RoleUser.getName().equals(role)) {
 				Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-						.orElseThrow(() -> new NotFoundException("User role"));
+						.orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
 				roles.add(userRole);
 			} else {
-				throw new NotFoundException("User role");
+				throw new NotFoundException(Utils.UserRole.getName());
 			}
 		});
 		user.setRoles(roles);
 		userRepository.save(user);
-		return ResponseEntity.ok(new ResponseMessage("User registered successfully!"));
+		return ResponseEntity.ok(new ResponseMessage(Utils.SignupMessage.getName()));
 	}
 
 }
