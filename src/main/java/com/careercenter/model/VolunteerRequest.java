@@ -41,12 +41,9 @@ public class VolunteerRequest {
     @NotNull(message = "Years of experience cannot be null.")
     private int yearsOfExperience;
 
-    @NotNull(message = "Volunteer Language cannot be null.")
+    private String[] languages;
 
-    private List<String> languages;
-
-    @NotNull(message = "Other Industry cannot be null.")
-    private List<String> otherIndustry;
+    private String[] otherIndustry;
 
     @NotNull(message = "Company cannot be null.")
     private Company company;

@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 @Builder
 @Data
@@ -57,9 +58,9 @@ public class Applicant {
 	@Column(name = "phone")
 	private String phone;
 
-//	@NotNull(message = "Category cannot be null.")
-//	@Column(name = "category")
-//	private String[] category;
+	@Column(name = "categories", columnDefinition = "text[]")
+	@Type(type = "com.careercenter.utils.SqlStringArrayType")
+	private String[] category;
 	
 	@NotNull(message = "Age cannot be null.")
 	@Column(name = "age")
@@ -74,8 +75,9 @@ public class Applicant {
 	@Column(name = "degree")
 	private String degree;
 	
-//	@Column(name = "languages")
-//	private String[] languages;
+	@Column(name = "languages", columnDefinition = "text[]M")
+	@Type(type = "com.careercenter.utils.SqlStringArrayType")
+	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")

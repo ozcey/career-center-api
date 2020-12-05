@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
-import com.careercenter.repositories.OtherIndustryRepository;
-import com.careercenter.repositories.VLanguageRepository;
 import com.careercenter.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +21,6 @@ public class VolunteerService {
 
     @Autowired
     private CompanyRepository companyRepository;
-
-    @Autowired
-    private VLanguageRepository vLanguageRepository;
-
-    @Autowired
-    private OtherIndustryRepository otherIndustryRepository;
 
     @Autowired
     private CompanyService companyService;
@@ -55,25 +47,13 @@ public class VolunteerService {
         throw new NotFoundException();
     }
 
-    public Volunteer updateVolunteer(Volunteer volunteer) {
-        Optional<Volunteer> optionalVolunteer = Optional.ofNullable(volunteer);
-        if (optionalVolunteer.isPresent()) {
-            return volunteerRepository.save(volunteer);
-        }
-        throw new NotFoundException();
-    }
-
     public VolunteerResponse createVolunteer(VolunteerRequest volunteerRequest){
         Volunteer volunteer = saveVolunteer(volunteerRequest);
         var id = volunteer.getId();
-        List<OtherIndustry> otherIndustries = saveOtherIndustry(id, volunteerRequest.getOtherIndustry());
         Company company = companyService.saveCompany(id, volunteerRequest.getCompany());
-        List<VolunteerLanguage> vLanguages = saveVLanguage(id, volunteerRequest.getLanguages());
         return VolunteerResponse.builder()
                 .volunteer(volunteer)
-                .otherIndustries(otherIndustries)
                 .companies(Arrays.asList(company))
-                .languages(vLanguages)
                 .build();
     }
 
@@ -88,6 +68,8 @@ public class VolunteerService {
                     .jobTitle(volunteerRequest.getJobTitle())
                     .industry(volunteerRequest.getIndustry())
                     .yearsOfExperience(volunteerRequest.getYearsOfExperience())
+                    .otherIndustries(volunteerRequest.getOtherIndustry())
+                    .languages(volunteerRequest.getLanguages())
                     .address(Address.builder()
                             .street(volunteerRequest.getAddress().getStreet())
                             .city(volunteerRequest.getAddress().getCity())
@@ -100,32 +82,10 @@ public class VolunteerService {
         throw new NotFoundException();
     }
 
-    private List<OtherIndustry> saveOtherIndustry(Long volunteerId, List<String> otherIndustries){
-        if(volunteerRepository.existsById(volunteerId)){
-            return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-               otherIndustries.forEach(industry -> {
-                   OtherIndustry otherIndustry = new OtherIndustry();
-                   otherIndustry.setIndustry(industry);
-                   otherIndustry.setVolunteer(volunteer);
-                   otherIndustryRepository.save(otherIndustry);
-               });
-               return otherIndustryRepository.findIndustryByVolunteerId(volunteer.getId());
-            }).orElseThrow(NotFoundException::new);
-        }
-        throw new NotFoundException();
-    }
-
-    private List<VolunteerLanguage> saveVLanguage(Long volunteerId, List<String> languages){
-        if(volunteerRepository.existsById(volunteerId)){
-            return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-                languages.forEach(language -> {
-                    VolunteerLanguage vLanguage = new VolunteerLanguage();
-                    vLanguage.setLanguage(language);
-                    vLanguage.setVolunteer(volunteer);
-                   vLanguageRepository.save(vLanguage);
-                });
-                return vLanguageRepository.findVLanguageByVolunteerId(volunteer.getId());
-            }).orElseThrow(NotFoundException::new);
+    public Volunteer updateVolunteer(Volunteer volunteer) {
+        Optional<Volunteer> optionalVolunteer = Optional.ofNullable(volunteer);
+        if (optionalVolunteer.isPresent()) {
+            return volunteerRepository.save(volunteer);
         }
         throw new NotFoundException();
     }

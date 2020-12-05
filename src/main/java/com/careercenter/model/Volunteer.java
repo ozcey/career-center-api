@@ -20,6 +20,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import lombok.AllArgsConstructor;
@@ -68,15 +69,17 @@ public class Volunteer {
 	@Column(name = "industry")
 	private String industry;
 
-//	@Column(name = "other_industries")
-//	private String[] otherIndustries;
+	@Column(name = "other_industries", columnDefinition = "text[]")
+	@Type(type = "com.careercenter.utils.SqlStringArrayType")
+	private String[] otherIndustries;
 
 	@NotNull(message = "Years of experience cannot be null.")
 	@Column(name = "experience")
 	private int yearsOfExperience;
 
-//	@Column(name = "languages")
-//	private String[] languages;
+	@Column(name = "languages", columnDefinition = "text[]M")
+	@Type(type = "com.careercenter.utils.SqlStringArrayType")
+	private String[] languages;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")
