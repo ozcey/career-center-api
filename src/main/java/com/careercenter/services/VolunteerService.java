@@ -1,8 +1,8 @@
 package com.careercenter.services;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
@@ -53,10 +53,11 @@ public class VolunteerService {
         log.info("Volunteer create request received.");
         Volunteer volunteer = saveVolunteer(volunteerRequest);
         var id = volunteer.getId();
-        Company company = companyService.saveCompany(id, volunteerRequest.getCompany());
+        List<Company> companies = volunteerRequest.getCompanies();
+        List<Company> companyList = companies.stream().map(company -> companyService.saveCompany(id, company)).collect(Collectors.toList());
         return VolunteerResponse.builder()
                 .volunteer(volunteer)
-                .companies(Arrays.asList(company))
+                .companies(companyList)
                 .build();
     }
 
@@ -64,23 +65,7 @@ public class VolunteerService {
         log.info("Volunteer save request received.");
         Optional<VolunteerRequest> vRequest = Optional.ofNullable(volunteerRequest);
         if(vRequest.isPresent()){
-            Volunteer volunteer = Volunteer.builder()
-                    .firstName(volunteerRequest.getFirstName())
-                    .lastName(volunteerRequest.getLastName())
-                    .email(volunteerRequest.getEmail())
-                    .phone(volunteerRequest.getPhone())
-                    .jobTitle(volunteerRequest.getJobTitle())
-                    .industry(volunteerRequest.getIndustry())
-                    .yearsOfExperience(volunteerRequest.getYearsOfExperience())
-                    .otherIndustries(volunteerRequest.getOtherIndustry())
-                    .languages(volunteerRequest.getLanguages())
-                    .address(Address.builder()
-                            .street(volunteerRequest.getAddress().getStreet())
-                            .city(volunteerRequest.getAddress().getCity())
-                            .state(volunteerRequest.getAddress().getState())
-                            .zipcode(volunteerRequest.getAddress().getZipcode())
-                            .build())
-                    .build();
+            var volunteer = volunteerRequest.getVolunteer();
             return volunteerRepository.save(volunteer);
         }
         throw new NotFoundException();
