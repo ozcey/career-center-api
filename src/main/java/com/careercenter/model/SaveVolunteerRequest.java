@@ -1,7 +1,5 @@
 package com.careercenter.model;
 
-import com.careercenter.entities.Company;
-import com.careercenter.entities.Volunteer;
 import lombok.Builder;
 import lombok.Data;
 

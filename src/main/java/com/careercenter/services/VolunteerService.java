@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.repositories.VolunteerRepository;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 @Slf4j
 @Service
 public class VolunteerService {

@@ -2,10 +2,8 @@ package com.careercenter.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.careercenter.entities.Address;
-import com.careercenter.model.AddressRequest;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
