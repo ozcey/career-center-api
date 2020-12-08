@@ -1,4 +1,4 @@
-package com.careercenter.model;
+package com.careercenter.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,25 +15,26 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.careercenter.entities.Address;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 @Builder
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "applicants")
-@SequenceGenerator(name = "applicants_id_seq", sequenceName = "applicants_id_seq", allocationSize = 1, initialValue = 30001)
-public class Applicant {
-	
+@Table(name = "volunteers")
+@SequenceGenerator(name = "volunteers_id_seq", sequenceName = "volunteers_id_seq", allocationSize = 1, initialValue = 20001)
+public class Volunteer {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "applicants_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "volunteers_id_seq")
 	private Long id;
 
 	@Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
@@ -56,24 +57,23 @@ public class Applicant {
 	@Column(name = "phone")
 	private String phone;
 
-	@Column(name = "categories", columnDefinition = "text[]")
-	@Type(type = "com.careercenter.utils.SqlStringArrayType")
-	private String[] category;
-	
-	@NotNull(message = "Age cannot be null.")
-	@Column(name = "age")
-	private int age;
-	
-	@Pattern(regexp = "Female|Male")
-	@NotNull(message = "Gender cannot be null.")
-	@Column(name = "gender")
-	private String gender;
+	@NotNull(message = "Job Title cannot be null.")
+	@Column(name = "job_title")
+	private String jobTitle;
 
-	@NotNull(message = "Degree cannot be null.")
-	@Column(name = "degree")
-	private String degree;
-	
-	@Column(name = "languages", columnDefinition = "text[]M")
+	@NotNull(message = "Industry cannot be null.")
+	@Column(name = "industry")
+	private String industry;
+
+	@Column(name = "other_industries", columnDefinition = "text[]")
+	@Type(type = "com.careercenter.utils.SqlStringArrayType")
+	private String[] otherIndustries;
+
+	@NotNull(message = "Years of experience cannot be null.")
+	@Column(name = "experience")
+	private int yearsOfExperience;
+
+	@Column(name = "languages", columnDefinition = "text[]")
 	@Type(type = "com.careercenter.utils.SqlStringArrayType")
 	private String[] languages;
 

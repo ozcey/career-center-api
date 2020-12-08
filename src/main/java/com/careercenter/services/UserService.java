@@ -2,7 +2,7 @@ package com.careercenter.services;
 
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.ResponseMessage;
-import com.careercenter.model.User;
+import com.careercenter.entities.User;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.utils.Utils;
 import lombok.extern.slf4j.Slf4j;

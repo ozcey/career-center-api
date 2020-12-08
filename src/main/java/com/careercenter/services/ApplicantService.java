@@ -2,14 +2,18 @@ package com.careercenter.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
+import com.careercenter.entities.Address;
+import com.careercenter.model.AddressRequest;
+import com.careercenter.model.ApplicantRequest;
 import com.careercenter.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careercenter.exception.NotFoundException;
-import com.careercenter.model.Applicant;
+import com.careercenter.entities.Applicant;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.ApplicantRepository;
 
@@ -33,8 +37,34 @@ public class ApplicantService {
 		return applicantRepository.findApplicantByEmail(email).orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
 	}
 
-	public Applicant saveApplicant(Applicant applicant) {
+	public Applicant saveApplicant(ApplicantRequest applicant) {
 		log.info("Applicant save request received.");
+		Optional<ApplicantRequest> optionalApplicant = Optional.ofNullable(applicant);
+		if (optionalApplicant.isPresent()) {
+			Applicant savedApplicant = Applicant.builder()
+					.firstName(applicant.getFirstName())
+					.lastName(applicant.getLastName())
+					.email(applicant.getEmail())
+					.phone(applicant.getPhone())
+					.age(applicant.getAge())
+					.category(applicant.getCategory())
+					.degree(applicant.getDegree())
+					.gender(applicant.getGender())
+					.languages(applicant.getLanguages())
+					.address(Address.builder()
+							.street(applicant.getAddress().getStreet())
+							.city(applicant.getAddress().getCity())
+							.state(applicant.getAddress().getState())
+							.zipcode(applicant.getAddress().getZipcode())
+							.build())
+					.build();
+			return applicantRepository.save(savedApplicant);
+		}
+		throw new NotFoundException();
+	}
+
+	public Applicant updateApplicant(Applicant applicant) {
+		log.info("Applicant update request received.");
 		Optional<Applicant> optionalApplicant = Optional.ofNullable(applicant);
 		if (optionalApplicant.isPresent()) {
 			return applicantRepository.save(applicant);

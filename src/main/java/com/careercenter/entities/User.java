@@ -1,4 +1,4 @@
-package com.careercenter.model;
+package com.careercenter.entities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.careercenter.entities.Role;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.JoinColumn;

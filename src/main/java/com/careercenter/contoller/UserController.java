@@ -1,7 +1,7 @@
 package com.careercenter.contoller;
 
 import com.careercenter.model.ResponseMessage;
-import com.careercenter.model.User;
+import com.careercenter.entities.User;
 import com.careercenter.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.careercenter.model.Applicant;
+import com.careercenter.entities.Applicant;
 
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {

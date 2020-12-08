@@ -1,5 +1,7 @@
 package com.careercenter.services;
 
+import com.careercenter.entities.Role;
+import com.careercenter.entities.User;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.*;
 import com.careercenter.repositories.RoleRepository;

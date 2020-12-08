@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.careercenter.model.ApplicantRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.careercenter.model.Applicant;
+import com.careercenter.entities.Applicant;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.services.ApplicantService;
 
@@ -60,7 +61,7 @@ public class ApplicantController {
 
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a New Applicant", description = "Create a new Applicant by passing Applicant request")
-	public ResponseEntity<Applicant> createApplicant(@Valid @NotNull @RequestBody Applicant applicant) {
+	public ResponseEntity<Applicant> createApplicant(@Valid @NotNull @RequestBody ApplicantRequest applicant) {
 		return ResponseEntity.ok().body(applicantService.saveApplicant(applicant));
 	}
 
@@ -68,7 +69,7 @@ public class ApplicantController {
 	@Operation(summary = "Update Applicant Data", description = "Applicant Id must be in request.")
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Applicant> updateApplicant(@Valid @NotNull @RequestBody Applicant Applicant) {
-		return ResponseEntity.ok().body(applicantService.saveApplicant(Applicant));
+		return ResponseEntity.ok().body(applicantService.updateApplicant(Applicant));
 	}
 
 	@DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VolunteerRequest {
+public class ApplicantRequest {
 
     @Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
     @NotNull(message = "First Name cannot be null.")
@@ -32,16 +32,17 @@ public class VolunteerRequest {
     @NotNull(message = "Phone cannot be null.")
     private String phone;
 
-    @NotNull(message = "Job Title cannot be null.")
-    private String jobTitle;
+    private String[] category;
 
-    @NotNull(message = "Industry cannot be null.")
-    private String industry;
+    @NotNull(message = "Age cannot be null.")
+    private int age;
 
-    private String[] otherIndustries;
+    @Pattern(regexp = "Female|Male")
+    @NotNull(message = "Gender cannot be null.")
+    private String gender;
 
-    @NotNull(message = "Years of experience cannot be null.")
-    private int yearsOfExperience;
+    @NotNull(message = "Degree cannot be null.")
+    private String degree;
 
     private String[] languages;
 

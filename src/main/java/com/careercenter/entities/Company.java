@@ -1,4 +1,4 @@
-package com.careercenter.model;
+package com.careercenter.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

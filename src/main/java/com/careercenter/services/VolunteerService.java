@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.careercenter.entities.Address;
+import com.careercenter.entities.Company;
+import com.careercenter.entities.Volunteer;
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.utils.Utils;
@@ -13,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.repositories.VolunteerRepository;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Slf4j
 @Service
@@ -49,11 +55,11 @@ public class VolunteerService {
         throw new NotFoundException();
     }
 
-    public VolunteerResponse createVolunteer(VolunteerRequest volunteerRequest){
+    public VolunteerResponse createVolunteer(SaveVolunteerRequest saveVolunteerRequest){
         log.info("Volunteer create request received.");
-        Volunteer volunteer = saveVolunteer(volunteerRequest);
+        Volunteer volunteer = saveVolunteer(saveVolunteerRequest.getVolunteer());
         var id = volunteer.getId();
-        List<Company> companies = volunteerRequest.getCompanies();
+        List<CompanyRequest> companies = saveVolunteerRequest.getCompanies();
         List<Company> companyList = companies.stream().map(company -> companyService.saveCompany(id, company)).collect(Collectors.toList());
         return VolunteerResponse.builder()
                 .volunteer(volunteer)
@@ -65,7 +71,23 @@ public class VolunteerService {
         log.info("Volunteer save request received.");
         Optional<VolunteerRequest> vRequest = Optional.ofNullable(volunteerRequest);
         if(vRequest.isPresent()){
-            var volunteer = volunteerRequest.getVolunteer();
+            Volunteer volunteer = Volunteer.builder()
+                    .firstName(volunteerRequest.getFirstName())
+                    .lastName(volunteerRequest.getLastName())
+                    .email(volunteerRequest.getEmail())
+                    .phone(volunteerRequest.getPhone())
+                    .jobTitle(volunteerRequest.getJobTitle())
+                    .industry(volunteerRequest.getIndustry())
+                    .otherIndustries(volunteerRequest.getOtherIndustries())
+                    .yearsOfExperience(volunteerRequest.getYearsOfExperience())
+                    .languages(volunteerRequest.getLanguages())
+                    .address(Address.builder()
+                            .street(volunteerRequest.getAddress().getStreet())
+                            .city(volunteerRequest.getAddress().getCity())
+                            .state(volunteerRequest.getAddress().getState())
+                            .zipcode(volunteerRequest.getAddress().getZipcode())
+                            .build())
+                    .build();
             return volunteerRepository.save(volunteer);
         }
         throw new NotFoundException();

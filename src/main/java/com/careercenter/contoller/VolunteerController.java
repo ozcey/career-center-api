@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.careercenter.entities.Volunteer;
 import com.careercenter.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -66,7 +67,7 @@ public class VolunteerController {
 
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create a New Volunteer", description = "Create a new Volunteer by passing Volunteer request")
-	public ResponseEntity<VolunteerResponse> createVolunteer(@Valid @NotNull @RequestBody VolunteerRequest volunteer) {
+	public ResponseEntity<VolunteerResponse> createVolunteer(@Valid @NotNull @RequestBody SaveVolunteerRequest volunteer) {
 		return ResponseEntity.ok().body(volunteerService.createVolunteer(volunteer));
 	}
 

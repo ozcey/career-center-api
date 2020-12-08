@@ -1,6 +1,7 @@
 package com.careercenter.contoller;
 
-import com.careercenter.model.Company;
+import com.careercenter.entities.Company;
+import com.careercenter.model.CompanyRequest;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.services.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +36,7 @@ public class CompanyController {
 
     @PostMapping(value = "/save/{volunteerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a New Volunteer", description = "Create a new Volunteer by passing Volunteer request")
-    public ResponseEntity<Company> createCompany(@Valid @NotNull @PathVariable Long volunteerId, @Valid @NotNull @RequestBody Company company) {
+    public ResponseEntity<Company> createCompany(@Valid @NotNull @PathVariable Long volunteerId, @Valid @NotNull @RequestBody CompanyRequest company) {
         return ResponseEntity.ok().body(companyService.saveCompany(volunteerId, company));
     }
 

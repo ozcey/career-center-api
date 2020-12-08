@@ -1,6 +1,6 @@
 package com.careercenter.repositories;
 
-import com.careercenter.model.Company;
+import com.careercenter.entities.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

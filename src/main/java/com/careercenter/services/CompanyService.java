@@ -1,7 +1,8 @@
 package com.careercenter.services;
 
 import com.careercenter.exception.NotFoundException;
-import com.careercenter.model.Company;
+import com.careercenter.entities.Company;
+import com.careercenter.model.CompanyRequest;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.VolunteerRepository;
@@ -26,7 +27,7 @@ public class CompanyService {
         return companyRepository.findByVolunteerId(id);
     }
 
-    public Company saveCompany(Long volunteerId, Company company){
+    public Company saveCompany(Long volunteerId, CompanyRequest company){
         log.info("Company save request received.");
         if(volunteerRepository.existsById(volunteerId)){
             return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {

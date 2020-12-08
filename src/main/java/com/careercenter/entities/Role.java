@@ -1,9 +1,10 @@
-package com.careercenter.model;
+package com.careercenter.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.Table;
 
+import com.careercenter.model.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.careercenter.model.User;
+import com.careercenter.entities.User;
 import com.careercenter.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
