@@ -30,6 +30,8 @@ public class VolunteerService {
     @Autowired
     private CompanyService companyService;
 
+    private static List<Company> companyList;
+
     public List<Volunteer> findAllVolunteers() {
         return volunteerRepository.findAll();
     }
@@ -68,44 +70,66 @@ public class VolunteerService {
         log.info("Volunteer save request received.");
         Optional<VolunteerRequest> vRequest = Optional.ofNullable(volunteerRequest);
         if(vRequest.isPresent()){
-            Volunteer volunteer = Volunteer.builder()
-                    .firstName(volunteerRequest.getFirstName())
-                    .lastName(volunteerRequest.getLastName())
-                    .email(volunteerRequest.getEmail())
-                    .phone(volunteerRequest.getPhone())
-                    .jobTitle(volunteerRequest.getJobTitle())
-                    .industry(volunteerRequest.getIndustry())
-                    .otherIndustries(volunteerRequest.getOtherIndustries())
-                    .yearsOfExperience(volunteerRequest.getYearsOfExperience())
-                    .languages(volunteerRequest.getLanguages())
-                    .address(Address.builder()
-                            .street(volunteerRequest.getAddress().getStreet())
-                            .city(volunteerRequest.getAddress().getCity())
-                            .state(volunteerRequest.getAddress().getState())
-                            .zipcode(volunteerRequest.getAddress().getZipcode())
-                            .build())
-                    .build();
+            Volunteer volunteer = getVolunteer(volunteerRequest);
             return volunteerRepository.save(volunteer);
         }
         throw new NotFoundException();
     }
 
-    public Volunteer updateVolunteer(Volunteer volunteer) {
+    public VolunteerResponse updateVolunteer(Long volunteerId, SaveVolunteerRequest saveVolunteerRequest){
+        log.info("Volunteer and Company update request received.");
+        Volunteer volunteer = saveVolunteer(volunteerId,saveVolunteerRequest.getVolunteer());
+        List<Company> cmpnylist = companyService.findCompanyByVolunteerId(volunteerId);
+        List<CompanyRequest> companies = saveVolunteerRequest.getCompanies();
+        cmpnylist.forEach(c -> companyList =  companies.stream().map(company -> companyService.updateCompany(c.getId(), company)).collect(Collectors.toList()));
+        return VolunteerResponse.builder()
+                .volunteer(volunteer)
+                .companies(companyList)
+                .build();
+    }
+
+    public Volunteer saveVolunteer(Long volunteerId, VolunteerRequest volunteerRequest) {
         log.info("Volunteer update request received.");
-        Optional<Volunteer> optionalVolunteer = Optional.ofNullable(volunteer);
-        if (optionalVolunteer.isPresent()) {
-            return volunteerRepository.save(volunteer);
-        }
-        throw new NotFoundException();
+        return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
+            var updatedVolunteer = getUpdatedVolunteer(volunteerRequest, volunteer);
+            return volunteerRepository.save(updatedVolunteer);
+        }).orElseThrow(NotFoundException::new);
     }
 
     public ResponseMessage deleteVolunteer(Long volunteerId) {
         log.info("Volunteer delete request received.");
         if (volunteerRepository.existsById(volunteerId)) {
             volunteerRepository.deleteById(volunteerId);
-            return new ResponseMessage(String.format("%s %s", Constants.VolunteerID.getName(), Constants.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s: %d %s", Constants.VolunteerID.getName(), volunteerId, Constants.DeleteMessage.getName()));
         }
         throw new NotFoundException(Constants.VolunteerID.getName());
+    }
+
+    private Volunteer getUpdatedVolunteer(VolunteerRequest volunteerRequest, Volunteer volunteer){
+        Volunteer savedVolunteer = getVolunteer(volunteerRequest);
+        savedVolunteer.setId(volunteer.getId());
+        savedVolunteer.getAddress().setId(volunteer.getAddress().getId());
+        return savedVolunteer;
+    }
+
+    private Volunteer getVolunteer(VolunteerRequest volunteerRequest){
+        return Volunteer.builder()
+                .firstName(volunteerRequest.getFirstName())
+                .lastName(volunteerRequest.getLastName())
+                .email(volunteerRequest.getEmail())
+                .phone(volunteerRequest.getPhone())
+                .jobTitle(volunteerRequest.getJobTitle())
+                .industry(volunteerRequest.getIndustry())
+                .otherIndustries(volunteerRequest.getOtherIndustries())
+                .yearsOfExperience(volunteerRequest.getYearsOfExperience())
+                .languages(volunteerRequest.getLanguages())
+                .address(Address.builder()
+                        .street(volunteerRequest.getAddress().getStreet())
+                        .city(volunteerRequest.getAddress().getCity())
+                        .state(volunteerRequest.getAddress().getState())
+                        .zipcode(volunteerRequest.getAddress().getZipcode())
+                        .build())
+                .build();
     }
 
 }

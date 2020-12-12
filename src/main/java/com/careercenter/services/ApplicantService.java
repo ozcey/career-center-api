@@ -39,23 +39,7 @@ public class ApplicantService {
 		log.info("Applicant save request received.");
 		Optional<ApplicantRequest> optionalApplicant = Optional.ofNullable(applicant);
 		if (optionalApplicant.isPresent()) {
-			Applicant savedApplicant = Applicant.builder()
-					.firstName(applicant.getFirstName())
-					.lastName(applicant.getLastName())
-					.email(applicant.getEmail())
-					.phone(applicant.getPhone())
-					.age(applicant.getAge())
-					.category(applicant.getCategory())
-					.degree(applicant.getDegree())
-					.gender(applicant.getGender())
-					.languages(applicant.getLanguages())
-					.address(Address.builder()
-							.street(applicant.getAddress().getStreet())
-							.city(applicant.getAddress().getCity())
-							.state(applicant.getAddress().getState())
-							.zipcode(applicant.getAddress().getZipcode())
-							.build())
-					.build();
+			var savedApplicant = getApplicant(applicant);
 			return applicantRepository.save(savedApplicant);
 		}
 		throw new NotFoundException();
@@ -74,10 +58,30 @@ public class ApplicantService {
 		log.info("Applicant delete request received.");
 		if (applicantRepository.existsById(applicantId)) {
 			applicantRepository.deleteById(applicantId);
-			return new ResponseMessage(String.format("%s %s", Constants.ApplicantID.getName(), Constants.DeleteMessage.getName()));
+			return new ResponseMessage(String.format("%s: %d %s", Constants.ApplicantID.getName(), applicantId, Constants.DeleteMessage.getName()));
 
 		}
 		throw new NotFoundException(Constants.ApplicantID.getName());
+	}
+
+	private Applicant getApplicant(ApplicantRequest applicant){
+		return Applicant.builder()
+				.firstName(applicant.getFirstName())
+				.lastName(applicant.getLastName())
+				.email(applicant.getEmail())
+				.phone(applicant.getPhone())
+				.age(applicant.getAge())
+				.category(applicant.getCategory())
+				.degree(applicant.getDegree())
+				.gender(applicant.getGender())
+				.languages(applicant.getLanguages())
+				.address(Address.builder()
+						.street(applicant.getAddress().getStreet())
+						.city(applicant.getAddress().getCity())
+						.state(applicant.getAddress().getState())
+						.zipcode(applicant.getAddress().getZipcode())
+						.build())
+				.build();
 	}
 
 }

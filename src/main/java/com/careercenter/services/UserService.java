@@ -3,6 +3,7 @@ package com.careercenter.services;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.entities.User;
+import com.careercenter.model.UserResponse;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll().stream().map(user -> User.builder()
+    public List<UserResponse> findAllUsers() {
+        return userRepository.findAll().stream().map(user -> UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
@@ -35,6 +36,11 @@ public class UserService {
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new NotFoundException(Constants.Email.getName()));
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new NotFoundException(Constants.Username.getName()));
     }
 
     public User findUserById(Long userId) {

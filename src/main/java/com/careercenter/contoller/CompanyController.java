@@ -42,7 +42,7 @@ public class CompanyController {
 
     @PutMapping(value = "/update/{volunteerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update Company Data", description = "Company Id must be in request.")
-    public ResponseEntity<Company> updateCompany(@Valid @NotNull @PathVariable Long volunteerId, @Valid @NotNull @RequestBody Company company) {
+    public ResponseEntity<Company> updateCompany(@Valid @NotNull @PathVariable Long volunteerId, @Valid @NotNull @RequestBody CompanyRequest company) {
         return ResponseEntity.ok().body(companyService.updateCompany(volunteerId, company));
     }
 

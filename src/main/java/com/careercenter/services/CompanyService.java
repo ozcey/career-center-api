@@ -43,10 +43,10 @@ public class CompanyService {
         throw new NotFoundException();
     }
 
-    public Company updateCompany(Long volunteerId, Company company){
+    public Company updateCompany(Long companyId, CompanyRequest company){
         log.info("Company update request received.");
-        if(volunteerRepository.existsById(volunteerId)){
-            return companyRepository.findById(company.getId()).map(updatedCompany -> {
+        if(companyRepository.existsById(companyId)){
+            return companyRepository.findById(companyId).map(updatedCompany -> {
                 updatedCompany.setName(company.getName());
                 updatedCompany.setCity(company.getCity());
                 updatedCompany.setState(company.getState());
@@ -55,6 +55,19 @@ public class CompanyService {
         }
         throw new NotFoundException();
     }
+
+//    public Company updateCompany(Long volunteerId, CompanyRequest company){
+//        log.info("Company update request received.");
+//        if(volunteerRepository.existsById(volunteerId)){
+//            return companyRepository.findById(company.getId()).map(updatedCompany -> {
+//                updatedCompany.setName(company.getName());
+//                updatedCompany.setCity(company.getCity());
+//                updatedCompany.setState(company.getState());
+//                return companyRepository.save(updatedCompany);
+//            }).orElseThrow(NotFoundException::new);
+//        }
+//        throw new NotFoundException();
+//    }
 
     public ResponseMessage deleteCompanyById(Long companyId){
         log.info("Company delete request received.");

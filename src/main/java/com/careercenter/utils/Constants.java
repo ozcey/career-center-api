@@ -15,6 +15,7 @@ public enum Constants {
     SignupMessage("User registered successfully."),
     DeleteMessage("deleted successfully."),
     Email("email"),
+    Username("username"),
     User("user"),
     UserID("userId"),
     CompanyID("companyId"),

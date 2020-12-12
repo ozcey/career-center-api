@@ -2,6 +2,7 @@ package com.careercenter.contoller;
 
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.entities.User;
+import com.careercenter.model.UserResponse;
 import com.careercenter.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +32,7 @@ public class UserController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Retrieves All Users", description = "No need to pass parameters")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<User>> retrieveAllUsers() {
+    public ResponseEntity<List<UserResponse>> retrieveAllUsers() {
         return ResponseEntity.ok().body(userService.findAllUsers());
     }
 
@@ -47,6 +48,13 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> retrieveUserByEmail(@Email(message = "Invalid email.") @PathVariable String email) {
         return ResponseEntity.ok().body(userService.findUserByEmail(email));
+    }
+
+    @GetMapping(value = "/username/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Retrieves an User By Username", description = "Need to pass user username")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<User> retrieveUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok().body(userService.findUserByUsername(username));
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
