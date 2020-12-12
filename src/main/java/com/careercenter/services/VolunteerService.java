@@ -9,7 +9,7 @@ import com.careercenter.entities.Company;
 import com.careercenter.entities.Volunteer;
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
-import com.careercenter.utils.Utils;
+import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,11 +36,11 @@ public class VolunteerService {
 
     public Volunteer findVolunteerById(Long volunteerId) {
         return volunteerRepository.findVolunteerById(volunteerId)
-                .orElseThrow(() -> new NotFoundException(Utils.VolunteerID.getName()));
+                .orElseThrow(() -> new NotFoundException(Constants.VolunteerID.getName()));
     }
 
     public Volunteer findVolunteerByEmail(String email) {
-        return volunteerRepository.findVolunteerByEmail(email).orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
+        return volunteerRepository.findVolunteerByEmail(email).orElseThrow(() -> new NotFoundException(Constants.Email.getName()));
     }
 
     public VolunteerResponse findVolunteerAndCompany(Long id) {
@@ -103,9 +103,9 @@ public class VolunteerService {
         log.info("Volunteer delete request received.");
         if (volunteerRepository.existsById(volunteerId)) {
             volunteerRepository.deleteById(volunteerId);
-            return new ResponseMessage(String.format("%s %s", Utils.VolunteerID.getName(), Utils.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s %s", Constants.VolunteerID.getName(), Constants.DeleteMessage.getName()));
         }
-        throw new NotFoundException(Utils.VolunteerID.getName());
+        throw new NotFoundException(Constants.VolunteerID.getName());
     }
 
 }

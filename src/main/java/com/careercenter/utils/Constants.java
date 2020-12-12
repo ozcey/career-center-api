@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Utils {
-
+public enum Constants {
     Authorization("Authorization"),
     RoleAdmin("ROLE_ADMIN"),
     RoleUser("ROLE_USER"),

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.careercenter.entities.Address;
 import com.careercenter.model.ApplicantRequest;
-import com.careercenter.utils.Utils;
+import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +28,11 @@ public class ApplicantService {
 
 	public Applicant findApplicantById(Long applicantDd) {
 		return applicantRepository.findApplicantById(applicantDd)
-				.orElseThrow(() -> new NotFoundException(Utils.ApplicantID.getName()));
+				.orElseThrow(() -> new NotFoundException(Constants.ApplicantID.getName()));
 	}
 
 	public Applicant findApplicantByEmail(String email) {
-		return applicantRepository.findApplicantByEmail(email).orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
+		return applicantRepository.findApplicantByEmail(email).orElseThrow(() -> new NotFoundException(Constants.Email.getName()));
 	}
 
 	public Applicant saveApplicant(ApplicantRequest applicant) {
@@ -74,10 +74,10 @@ public class ApplicantService {
 		log.info("Applicant delete request received.");
 		if (applicantRepository.existsById(applicantId)) {
 			applicantRepository.deleteById(applicantId);
-			return new ResponseMessage(String.format("%s %s", Utils.ApplicantID.getName(), Utils.DeleteMessage.getName()));
+			return new ResponseMessage(String.format("%s %s", Constants.ApplicantID.getName(), Constants.DeleteMessage.getName()));
 
 		}
-		throw new NotFoundException(Utils.ApplicantID.getName());
+		throw new NotFoundException(Constants.ApplicantID.getName());
 	}
 
 }

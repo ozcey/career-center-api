@@ -4,7 +4,7 @@ import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.entities.User;
 import com.careercenter.repositories.UserRepository;
-import com.careercenter.utils.Utils;
+import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,12 +34,12 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new NotFoundException(Utils.Email.getName()));
+                .orElseThrow(() -> new NotFoundException(Constants.Email.getName()));
     }
 
     public User findUserById(Long userId) {
         return userRepository.findUserById(userId)
-                .orElseThrow(() -> new NotFoundException(Utils.UserID.getName()));
+                .orElseThrow(() -> new NotFoundException(Constants.UserID.getName()));
     }
 
     public User updateUser(User user) {
@@ -48,16 +48,16 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }
-        throw new NotFoundException(Utils.User.getName());
+        throw new NotFoundException(Constants.User.getName());
     }
 
     public ResponseMessage deleteUser(Long  userId) {
         log.info("User delete request received.");
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
-            return new ResponseMessage(String.format("%s %s", Utils.UserID.getName(), Utils.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s %s", Constants.UserID.getName(), Constants.DeleteMessage.getName()));
         }
-        throw new NotFoundException(Utils.UserID.getName());
+        throw new NotFoundException(Constants.UserID.getName());
     }
 
 

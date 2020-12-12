@@ -7,7 +7,7 @@ import com.careercenter.model.*;
 import com.careercenter.repositories.RoleRepository;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.security.JWTTokenProvider;
-import com.careercenter.utils.Utils;
+import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,11 +51,11 @@ public class AuthService {
 
     public ResponseEntity<ResponseMessage> signup(SignUpRequest signUpRequest){
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<>(new ResponseMessage(Utils.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage(Constants.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage(Utils.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage(Constants.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
         }
 
         User user = User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
@@ -65,20 +65,20 @@ public class AuthService {
         Set<Role> roles = new HashSet<>();
 
         sRoles.forEach(role -> {
-            if (Utils.RoleAdmin.getName().equals(role)) {
+            if (Constants.RoleAdmin.getName().equals(role)) {
                 Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                        .orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
+                        .orElseThrow(() -> new NotFoundException(Constants.UserRole.getName()));
                 roles.add(adminRole);
-            } else if (Utils.RoleUser.getName().equals(role)) {
+            } else if (Constants.RoleUser.getName().equals(role)) {
                 Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                        .orElseThrow(() -> new NotFoundException(Utils.UserRole.getName()));
+                        .orElseThrow(() -> new NotFoundException(Constants.UserRole.getName()));
                 roles.add(userRole);
             } else {
-                throw new NotFoundException(Utils.UserRole.getName());
+                throw new NotFoundException(Constants.UserRole.getName());
             }
         });
         user.setRoles(roles);
         userRepository.save(user);
-        return ResponseEntity.ok(new ResponseMessage(Utils.SignupMessage.getName()));
+        return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
     }
 }

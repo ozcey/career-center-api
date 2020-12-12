@@ -6,7 +6,7 @@ import com.careercenter.model.CompanyRequest;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.VolunteerRepository;
-import com.careercenter.utils.Utils;
+import com.careercenter.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,8 +60,8 @@ public class CompanyService {
         log.info("Company delete request received.");
         if (companyRepository.existsById(companyId)){
             companyRepository.deleteById(companyId);
-            return new ResponseMessage(String.format("%s %s", Utils.CompanyID.getName(), Utils.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s %s", Constants.CompanyID.getName(), Constants.DeleteMessage.getName()));
         }
-        throw new NotFoundException(Utils.CompanyID.getName());
+        throw new NotFoundException(Constants.CompanyID.getName());
     }
 }
