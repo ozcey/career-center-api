@@ -59,15 +59,15 @@ public class UserController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update User Data", description = "User Id must be in request.")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> updateUser(@Valid @NotNull @RequestBody @Parameter(description = "Pass an user as request") User user) {
         return ResponseEntity.ok().body(userService.updateUser(user));
     }
 
-    @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Delete an User By Id", description = "Need to pass user id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseMessage> deleteUser(@Valid @NotNull @RequestBody
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ResponseMessage> deleteUser(@Valid @NotNull @PathVariable
                                                       @Parameter(description = "Pass an user id in request") Long id) {
         return ResponseEntity.ok().body(userService.deleteUser(id));
     }
