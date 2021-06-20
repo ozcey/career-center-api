@@ -10,8 +10,8 @@ import com.careercenter.entities.Volunteer;
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careercenter.exception.NotFoundException;
@@ -19,16 +19,12 @@ import com.careercenter.repositories.VolunteerRepository;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class VolunteerService {
 
-    @Autowired
-    private VolunteerRepository volunteerRepository;
-
-    @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
-    private CompanyService companyService;
+    private final VolunteerRepository volunteerRepository;
+    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
     private static List<Company> companyList;
 
@@ -46,12 +42,10 @@ public class VolunteerService {
     }
 
     public VolunteerResponse findVolunteerAndCompany(Long id) {
-        Volunteer volunteer = findVolunteerById(id);
-        if (volunteer != null) {
+        return volunteerRepository.findVolunteerById(id).map(volunteer -> {
             List<Company> companies = companyRepository.findByVolunteerId(id);
             return VolunteerResponse.builder().volunteer(volunteer).companies(companies).build();
-        }
-        throw new NotFoundException();
+        }).orElseThrow(NotFoundException::new);
     }
 
     public VolunteerResponse createVolunteer(SaveVolunteerRequest saveVolunteerRequest){

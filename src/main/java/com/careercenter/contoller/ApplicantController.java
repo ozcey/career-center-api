@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.careercenter.model.ApplicantRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,10 +33,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Applicant Controller", description = "Applicant API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RequestMapping(value = "/applicant")
+@RequiredArgsConstructor
 public class ApplicantController {
 
-	@Autowired
-	private ApplicantService applicantService;
+	private final ApplicantService applicantService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Retrieves All Applicants", description = "No need to pass parameters")

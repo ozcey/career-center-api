@@ -7,21 +7,19 @@ import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.repositories.VolunteerRepository;
 import com.careercenter.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
 
-    @Autowired
-    private CompanyRepository companyRepository;
-
-    @Autowired
-    private VolunteerRepository volunteerRepository;
+    private final CompanyRepository companyRepository;
+    private final VolunteerRepository volunteerRepository;
 
     public List<Company> findCompanyByVolunteerId(Long id) {
         return companyRepository.findByVolunteerId(id);

@@ -7,7 +7,7 @@ import com.careercenter.services.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,10 +23,10 @@ import java.util.List;
 @ApiResponse(responseCode = "200", description = "Success")
 @RequestMapping(value = "/company")
 @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class CompanyController {
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Retrieves company by volunteer id", description = "Need to pass volunteer id")

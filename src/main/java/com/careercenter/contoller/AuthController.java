@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,10 @@ import com.careercenter.model.SignUpRequest;
 @ApiResponse(responseCode = "200", description = "Success")
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-	@Autowired
-	private AuthService authService;
+	private final AuthService authService;
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Log in to Account", description = "username = admin and password = password")

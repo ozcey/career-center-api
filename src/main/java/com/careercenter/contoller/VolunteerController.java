@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.careercenter.entities.Volunteer;
 import com.careercenter.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +32,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Volunteer Controller", description = "Volunteer API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RequestMapping(value = "/volunteer")
+@RequiredArgsConstructor
 public class VolunteerController {
 
-    @Autowired
-    private VolunteerService volunteerService;
+    private final VolunteerService volunteerService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Retrieves All Volunteers", description = "No need to pass parameters")

@@ -6,8 +6,8 @@ import com.careercenter.entities.User;
 import com.careercenter.model.UserResponse;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +16,23 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserResponse> findAllUsers() {
-        return userRepository.findAll().stream().map(user -> UserResponse.builder()
+        return userRepository.findAll().stream().map(this::getUserResponse).collect(Collectors.toList());
+    }
+
+    private UserResponse getUserResponse(User user) {
+        return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .build()).collect(Collectors.toList());
+                .build();
     }
 
     public User findUserByEmail(String email) {

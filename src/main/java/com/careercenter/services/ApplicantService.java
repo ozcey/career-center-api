@@ -6,8 +6,8 @@ import java.util.Optional;
 import com.careercenter.entities.Address;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careercenter.exception.NotFoundException;
@@ -17,10 +17,10 @@ import com.careercenter.repositories.ApplicantRepository;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ApplicantService {
 
-	@Autowired
-	private ApplicantRepository applicantRepository;
+	private final ApplicantRepository applicantRepository;
 
 	public List<Applicant> findAllApplicants() {
 		return applicantRepository.findAll();

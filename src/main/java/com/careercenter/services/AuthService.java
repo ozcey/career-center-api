@@ -8,8 +8,8 @@ import com.careercenter.repositories.RoleRepository;
 import com.careercenter.repositories.UserRepository;
 import com.careercenter.security.JWTTokenProvider;
 import com.careercenter.utils.Constants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,22 +24,14 @@ import java.util.Set;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    AuthenticationManager authManager;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JWTTokenProvider jwtProvider;
+    private final AuthenticationManager authManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JWTTokenProvider jwtProvider;
 
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest){
         Authentication authentication = authManager.authenticate(
