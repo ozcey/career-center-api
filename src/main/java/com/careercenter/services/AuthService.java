@@ -42,20 +42,30 @@ public class AuthService {
     }
 
     public ResponseEntity<ResponseMessage> signup(SignUpRequest signUpRequest){
+        checkUsernameAndEmailInUse(signUpRequest);
+        User user = getUser(signUpRequest);
+        Set<String> sRoles = signUpRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
+        setRoles(sRoles, roles);
+        user.setRoles(roles);
+        userRepository.save(user);
+        log.info("User created successfully {}", user.toString());
+        return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
+    }
+
+    private ResponseEntity<ResponseMessage> checkUsernameAndEmailInUse(SignUpRequest signUpRequest) {
+        ResponseMessage responseMessage = new ResponseMessage();
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<>(new ResponseMessage(Constants.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
+            responseMessage.setMessage(Constants.UsernameMessage.getName());
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage(Constants.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
+            responseMessage.setMessage(Constants.EmailMessage.getName());
         }
+        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+    }
 
-        User user = User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
-                .email(signUpRequest.getEmail()).password(passwordEncoder.encode(signUpRequest.getPassword())).build();
-
-        Set<String> sRoles = signUpRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-
+    private void setRoles(Set<String> sRoles, Set<Role> roles) {
         sRoles.forEach(role -> {
             if (Constants.RoleAdmin.getName().equals(role)) {
                 Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
@@ -69,8 +79,10 @@ public class AuthService {
                 throw new NotFoundException(Constants.UserRole.getName());
             }
         });
-        user.setRoles(roles);
-        userRepository.save(user);
-        return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
+    }
+
+    private User getUser(SignUpRequest signUpRequest) {
+        return User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
+                .email(signUpRequest.getEmail()).password(passwordEncoder.encode(signUpRequest.getPassword())).build();
     }
 }
