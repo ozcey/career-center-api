@@ -1,6 +1,7 @@
 package com.careercenter.services;
 
 import com.careercenter.exception.NotFoundException;
+import com.careercenter.mapper.UserMapper;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.entities.User;
 import com.careercenter.model.UserResponse;
@@ -21,18 +22,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     public List<UserResponse> findAllUsers() {
-        return userRepository.findAll().stream().map(this::getUserResponse).collect(Collectors.toList());
-    }
-
-    private UserResponse getUserResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .username(user.getUsername())
-                .build();
+        return userRepository.findAll().stream().map(userMapper::getUserResponse).collect(Collectors.toList());
     }
 
     public User findUserByEmail(String email) {
@@ -67,6 +60,5 @@ public class UserService {
         }
         throw new NotFoundException(Constants.UserID.getName());
     }
-
 
 }

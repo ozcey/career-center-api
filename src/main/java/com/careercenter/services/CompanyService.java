@@ -2,6 +2,7 @@ package com.careercenter.services;
 
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.entities.Company;
+import com.careercenter.mapper.VolunteerMapper;
 import com.careercenter.model.CompanyRequest;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.CompanyRepository;
@@ -20,6 +21,7 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final VolunteerRepository volunteerRepository;
+    private final VolunteerMapper volunteerMapper;
 
     public List<Company> findCompanyByVolunteerId(Long id) {
         return companyRepository.findByVolunteerId(id);
@@ -29,12 +31,7 @@ public class CompanyService {
         log.info("Company save request received.");
         if(volunteerRepository.existsById(volunteerId)){
             return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-                Company savedCompany = Company.builder()
-                        .name(company.getName())
-                        .city(company.getCity())
-                        .state(company.getState())
-                        .volunteer(volunteer)
-                        .build();
+                Company savedCompany = volunteerMapper.getCompany(company, volunteer);
                 return companyRepository.save(savedCompany);
             }).orElseThrow(NotFoundException::new);
         }

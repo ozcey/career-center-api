@@ -3,7 +3,7 @@ package com.careercenter.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.careercenter.entities.Address;
+import com.careercenter.mapper.ApplicantMapper;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.utils.Constants;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,7 @@ import com.careercenter.repositories.ApplicantRepository;
 public class ApplicantService {
 
 	private final ApplicantRepository applicantRepository;
+	private final ApplicantMapper applicantMapper;
 
 	public List<Applicant> findAllApplicants() {
 		return applicantRepository.findAll();
@@ -37,12 +38,8 @@ public class ApplicantService {
 
 	public Applicant saveApplicant(ApplicantRequest applicant) {
 		log.info("Applicant save request received.");
-		Optional<ApplicantRequest> optionalApplicant = Optional.ofNullable(applicant);
-		if (optionalApplicant.isPresent()) {
-			var savedApplicant = getApplicant(applicant);
-			return applicantRepository.save(savedApplicant);
-		}
-		throw new NotFoundException();
+		var optionalApplicant = applicantMapper.getApplicant(applicant);
+		return optionalApplicant.map(applicantRepository::save).orElseThrow(NotFoundException::new);
 	}
 
 	public Applicant updateApplicant(Applicant applicant) {
@@ -59,29 +56,7 @@ public class ApplicantService {
 		if (applicantRepository.existsById(applicantId)) {
 			applicantRepository.deleteById(applicantId);
 			return new ResponseMessage(String.format("%s: %d %s", Constants.ApplicantID.getName(), applicantId, Constants.DeleteMessage.getName()));
-
 		}
 		throw new NotFoundException(Constants.ApplicantID.getName());
 	}
-
-	private Applicant getApplicant(ApplicantRequest applicant){
-		return Applicant.builder()
-				.firstName(applicant.getFirstName())
-				.lastName(applicant.getLastName())
-				.email(applicant.getEmail())
-				.phone(applicant.getPhone())
-				.age(applicant.getAge())
-				.category(applicant.getCategory())
-				.degree(applicant.getDegree())
-				.gender(applicant.getGender())
-				.languages(applicant.getLanguages())
-				.address(Address.builder()
-						.street(applicant.getAddress().getStreet())
-						.city(applicant.getAddress().getCity())
-						.state(applicant.getAddress().getState())
-						.zipcode(applicant.getAddress().getZipcode())
-						.build())
-				.build();
-	}
-
 }

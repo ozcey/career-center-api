@@ -3,6 +3,7 @@ package com.careercenter.services;
 import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
 import com.careercenter.exception.NotFoundException;
+import com.careercenter.mapper.UserMapper;
 import com.careercenter.model.*;
 import com.careercenter.repositories.RoleRepository;
 import com.careercenter.repositories.UserRepository;
@@ -16,10 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -30,10 +31,10 @@ public class AuthService {
     private final AuthenticationManager authManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JWTTokenProvider jwtProvider;
+    private final UserMapper userMapper;
 
-    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -41,28 +42,25 @@ public class AuthService {
         return ResponseEntity.ok(new LoginResponse(jwt));
     }
 
-    public ResponseEntity<ResponseMessage> signup(SignUpRequest signUpRequest){
-        checkUsernameAndEmailInUse(signUpRequest);
-        User user = getUser(signUpRequest);
-        Set<String> sRoles = signUpRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-        setRoles(sRoles, roles);
-        user.setRoles(roles);
-        userRepository.save(user);
-        log.info("User created successfully {}", user.toString());
-        return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
-    }
-
-    private ResponseEntity<ResponseMessage> checkUsernameAndEmailInUse(SignUpRequest signUpRequest) {
-        ResponseMessage responseMessage = new ResponseMessage();
+    public ResponseEntity<ResponseMessage> signup(SignUpRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            responseMessage.setMessage(Constants.UsernameMessage.getName());
+            return new ResponseEntity<>(new ResponseMessage(Constants.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            responseMessage.setMessage(Constants.EmailMessage.getName());
+            return new ResponseEntity<>(new ResponseMessage(Constants.EmailMessage.getName()), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+
+        Set<String> sRoles = signUpRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
+        setRoles(sRoles, roles);
+        Optional<User> optionalUser = userMapper.getAuthUser(signUpRequest);
+        return optionalUser.map(user -> {
+            user.setRoles(roles);
+            userRepository.save(user);
+            log.info("User created successfully");
+            return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
+        }).orElseThrow(NotFoundException::new);
     }
 
     private void setRoles(Set<String> sRoles, Set<Role> roles) {
@@ -79,10 +77,5 @@ public class AuthService {
                 throw new NotFoundException(Constants.UserRole.getName());
             }
         });
-    }
-
-    private User getUser(SignUpRequest signUpRequest) {
-        return User.builder().name(signUpRequest.getName()).username(signUpRequest.getUsername())
-                .email(signUpRequest.getEmail()).password(passwordEncoder.encode(signUpRequest.getPassword())).build();
     }
 }

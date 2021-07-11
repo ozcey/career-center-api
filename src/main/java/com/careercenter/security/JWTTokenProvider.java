@@ -41,7 +41,7 @@ public class JWTTokenProvider {
 			return true;
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException
 				| IllegalArgumentException e) {
-			log.error("Invalid JWT token - {}", e);
+			log.error("Invalid JWT token {}", e.getLocalizedMessage());
 		}
 		return false;
 	}

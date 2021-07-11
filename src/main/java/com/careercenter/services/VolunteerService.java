@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.careercenter.entities.Address;
 import com.careercenter.entities.Company;
 import com.careercenter.entities.Volunteer;
+import com.careercenter.mapper.VolunteerMapper;
 import com.careercenter.model.*;
 import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.utils.Constants;
@@ -25,6 +25,7 @@ public class VolunteerService {
     private final VolunteerRepository volunteerRepository;
     private final CompanyRepository companyRepository;
     private final CompanyService companyService;
+    private final VolunteerMapper volunteerMapper;
 
     private static List<Company> companyList;
 
@@ -62,12 +63,8 @@ public class VolunteerService {
 
     private Volunteer saveVolunteer(VolunteerRequest volunteerRequest){
         log.info("Volunteer save request received.");
-        Optional<VolunteerRequest> vRequest = Optional.ofNullable(volunteerRequest);
-        if(vRequest.isPresent()){
-            Volunteer volunteer = getVolunteer(volunteerRequest);
-            return volunteerRepository.save(volunteer);
-        }
-        throw new NotFoundException();
+        var optionalVolunteer = volunteerMapper.getVolunteer(volunteerRequest);
+        return optionalVolunteer.map(volunteerRepository::save).orElseThrow(NotFoundException::new);
     }
 
     public VolunteerResponse updateVolunteer(Long volunteerId, SaveVolunteerRequest saveVolunteerRequest){
@@ -85,8 +82,8 @@ public class VolunteerService {
     public Volunteer saveVolunteer(Long volunteerId, VolunteerRequest volunteerRequest) {
         log.info("Volunteer update request received.");
         return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-            var updatedVolunteer = getUpdatedVolunteer(volunteerRequest, volunteer);
-            return volunteerRepository.save(updatedVolunteer);
+            Optional<Volunteer> optionalVolunteer = volunteerMapper.getUpdatedVolunteer(volunteerRequest, volunteer);
+            return optionalVolunteer.map(volunteerRepository::save).orElseThrow(NotFoundException::new);
         }).orElseThrow(NotFoundException::new);
     }
 
@@ -98,32 +95,4 @@ public class VolunteerService {
         }
         throw new NotFoundException(Constants.VolunteerID.getName());
     }
-
-    private Volunteer getUpdatedVolunteer(VolunteerRequest volunteerRequest, Volunteer volunteer){
-        Volunteer savedVolunteer = getVolunteer(volunteerRequest);
-        savedVolunteer.setId(volunteer.getId());
-        savedVolunteer.getAddress().setId(volunteer.getAddress().getId());
-        return savedVolunteer;
-    }
-
-    private Volunteer getVolunteer(VolunteerRequest volunteerRequest){
-        return Volunteer.builder()
-                .firstName(volunteerRequest.getFirstName())
-                .lastName(volunteerRequest.getLastName())
-                .email(volunteerRequest.getEmail())
-                .phone(volunteerRequest.getPhone())
-                .jobTitle(volunteerRequest.getJobTitle())
-                .industry(volunteerRequest.getIndustry())
-                .otherIndustries(volunteerRequest.getOtherIndustries())
-                .yearsOfExperience(volunteerRequest.getYearsOfExperience())
-                .languages(volunteerRequest.getLanguages())
-                .address(Address.builder()
-                        .street(volunteerRequest.getAddress().getStreet())
-                        .city(volunteerRequest.getAddress().getCity())
-                        .state(volunteerRequest.getAddress().getState())
-                        .zipcode(volunteerRequest.getAddress().getZipcode())
-                        .build())
-                .build();
-    }
-
 }

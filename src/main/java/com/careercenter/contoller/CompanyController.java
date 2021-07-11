@@ -47,7 +47,7 @@ public class CompanyController {
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Delete an Company By Id", description = "Need to pass Company id")
+    @Operation(summary = "Delete Company By Id", description = "Need to pass Company id")
     public ResponseEntity<ResponseMessage> deleteCompany(@Valid @NotNull @PathVariable long id) {
         return ResponseEntity.ok().body(companyService.deleteCompanyById(id));
     }
