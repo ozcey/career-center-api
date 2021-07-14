@@ -56,7 +56,7 @@ public class UserService {
         log.info("User delete request received.");
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
-            return new ResponseMessage(String.format("%s %s", Constants.UserID.getName(), Constants.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s with id: %s %s", "User", userId, Constants.DeleteMessage.getName()));
         }
         throw new NotFoundException(Constants.UserID.getName());
     }

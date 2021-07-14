@@ -55,7 +55,7 @@ public class CompanyService {
         log.info("Company delete request received.");
         if (companyRepository.existsById(companyId)){
             companyRepository.deleteById(companyId);
-            return new ResponseMessage(String.format("%s %s", Constants.CompanyID.getName(), Constants.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s with id: %s %s", "Company",Constants.CompanyID.getName(), Constants.DeleteMessage.getName()));
         }
         throw new NotFoundException(Constants.CompanyID.getName());
     }

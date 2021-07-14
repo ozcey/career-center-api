@@ -6,8 +6,6 @@ import com.careercenter.entities.Volunteer;
 import com.careercenter.model.CompanyRequest;
 import com.careercenter.model.VolunteerRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Component

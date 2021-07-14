@@ -91,7 +91,7 @@ public class VolunteerService {
         log.info("Volunteer delete request received.");
         if (volunteerRepository.existsById(volunteerId)) {
             volunteerRepository.deleteById(volunteerId);
-            return new ResponseMessage(String.format("%s: %d %s", Constants.VolunteerID.getName(), volunteerId, Constants.DeleteMessage.getName()));
+            return new ResponseMessage(String.format("%s with id: %d %s", "Volunteer", volunteerId, Constants.DeleteMessage.getName()));
         }
         throw new NotFoundException(Constants.VolunteerID.getName());
     }

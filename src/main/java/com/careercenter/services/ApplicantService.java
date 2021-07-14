@@ -55,7 +55,7 @@ public class ApplicantService {
 		log.info("Applicant delete request received.");
 		if (applicantRepository.existsById(applicantId)) {
 			applicantRepository.deleteById(applicantId);
-			return new ResponseMessage(String.format("%s: %d %s", Constants.ApplicantID.getName(), applicantId, Constants.DeleteMessage.getName()));
+			return new ResponseMessage(String.format("%s with id: %d %s", "Applicant", applicantId, Constants.DeleteMessage.getName()));
 		}
 		throw new NotFoundException(Constants.ApplicantID.getName());
 	}
