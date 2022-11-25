@@ -35,16 +35,15 @@ or
 * Open terminal
 * Run the following command
 
-
-'''
+```
 mvn spring-boot:run
-'''
-
+```
 
 ### Running on Docker
 * Navigate to project directory
 * Open terminal
 * Run the following command
-'''
+
+```
 docker-compose up
-'''
+```
