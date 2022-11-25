@@ -34,6 +34,7 @@ or
 * Navigate to project directory
 * Open terminal
 * Run the following command
+
 '''
 mvn spring-boot:run
 '''
