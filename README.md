@@ -30,6 +30,15 @@ The project link here [GitHub link](https://github.com/ozcey/career-center-api.g
 * Locate the Spring boot application runner file
 * Click Run on the file after right click 
 
+or
+* Navigate to project directory
+* Open terminal
+* Run the following command
+'''
+mvn spring-boot:run
+'''
+
+
 ### Running on Docker
 * Navigate to project directory
 * Open terminal
