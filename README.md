@@ -47,3 +47,4 @@ mvn spring-boot:run
 ```
 docker-compose up
 ```
+The app will start on port 5000.
