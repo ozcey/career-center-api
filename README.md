@@ -26,5 +26,5 @@ The project link here [GitHub link](https://github.com/ozcey/career-center-api.g
 ## Running App
 * Clone the repository or download the zip file
 * Import the project into IntelliJ IDEA or Eclipse
-* Locate the Spring boot application runner filer
+* Locate the Spring boot application runner file
 * Click Run on the file after right click 
