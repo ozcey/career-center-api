@@ -31,7 +31,7 @@ The project link here [GitHub link](https://github.com/ozcey/career-center-api.g
 * Click Run on the file after right click 
 
 ### Running on Docker
-* Navigate to project firectory
+* Navigate to project directory
 * Open terminal
 * Run the following command
 '''
