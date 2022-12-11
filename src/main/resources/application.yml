@@ -1,9 +1,9 @@
 spring:
   datasource:
     platform: postgres
-    username: postgres
-    password: Password
-    url: jdbc:postgresql://localhost:5432/career_db
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
@@ -17,5 +17,6 @@ server:
      context-path: /career-center/api
 
 app:
-  jwtSecret: jwtsecret
-  jwtExpiration: 604800000
+  jwtSecret: ${JWT_SECRET}
+  jwtExpiration: ${JWT_EXPIRATION}
+  allowedOrigins: ${ALLOWED_ORIGINS}
