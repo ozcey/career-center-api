@@ -19,7 +19,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @Tag(name = "User Controller", description = "User API")
 @ApiResponse(responseCode = "200", description = "Success")

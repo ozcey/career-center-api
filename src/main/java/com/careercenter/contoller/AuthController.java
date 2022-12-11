@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @Tag(name = "Auth Controller", description = "Auth API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RestController
