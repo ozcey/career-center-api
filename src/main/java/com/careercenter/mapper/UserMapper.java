@@ -25,7 +25,7 @@ public class UserMapper {
     }
 
     public UserResponse getUserResponse(User user) {
-        var userResponse = new UserResponse();
+        UserResponse userResponse = new UserResponse();
         if (user != null) {
             userResponse = UserResponse.builder()
                     .id(user.getId())

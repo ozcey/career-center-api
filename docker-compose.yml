@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  career-center-api:
+    image: ozcey/career-center-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOSTNAME: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: career_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password
+    networks:
+      - career-center-api-network
+
+  postgres:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_ROOT_PASSWORD: Password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password
+      POSTGRES_DB: career_db
+    volumes:
+      - career-db-volume:/var/lib/postgresql/data
+    networks:
+      - career-center-api-network
+
+volumes:
+  career-db-volume:
+
+networks:
+  career-center-api-network:

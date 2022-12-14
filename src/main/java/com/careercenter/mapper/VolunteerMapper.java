@@ -36,9 +36,9 @@ public class VolunteerMapper {
     }
 
     public Optional<Volunteer> getUpdatedVolunteer(VolunteerRequest volunteerRequest, Volunteer volunteer){
-       var volunteerOptional = getVolunteer(volunteerRequest);
+       Optional<Volunteer> volunteerOptional = getVolunteer(volunteerRequest);
        if(volunteerOptional.isPresent()){
-           var savedVolunteer = volunteerOptional.get();
+           Volunteer savedVolunteer = volunteerOptional.get();
            savedVolunteer.setId(volunteer.getId());
            savedVolunteer.getAddress().setId(volunteer.getAddress().getId());
            return Optional.of(savedVolunteer);
@@ -47,7 +47,7 @@ public class VolunteerMapper {
     }
 
     public Company getCompany(CompanyRequest company, Volunteer volunteer) {
-        var savedCompany =  new Company();
+        Company savedCompany =  new Company();
         if(company != null || volunteer != null){
             savedCompany = Company.builder()
                     .name(company.getName())

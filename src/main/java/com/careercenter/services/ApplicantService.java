@@ -38,7 +38,7 @@ public class ApplicantService {
 
 	public Applicant saveApplicant(ApplicantRequest applicant) {
 		log.info("Applicant save request received.");
-		var optionalApplicant = applicantMapper.getApplicant(applicant);
+		Optional<Applicant> optionalApplicant = applicantMapper.getApplicant(applicant);
 		return optionalApplicant.map(applicantRepository::save).orElseThrow(NotFoundException::new);
 	}
 

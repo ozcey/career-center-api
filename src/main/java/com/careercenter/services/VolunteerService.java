@@ -52,7 +52,7 @@ public class VolunteerService {
     public VolunteerResponse createVolunteer(SaveVolunteerRequest saveVolunteerRequest){
         log.info("Volunteer create request received.");
         Volunteer volunteer = saveVolunteer(saveVolunteerRequest.getVolunteer());
-        var id = volunteer.getId();
+        long id = volunteer.getId();
         List<CompanyRequest> companies = saveVolunteerRequest.getCompanies();
         List<Company> companyList = companies.stream().map(company -> companyService.saveCompany(id, company)).collect(Collectors.toList());
         return VolunteerResponse.builder()
@@ -63,7 +63,7 @@ public class VolunteerService {
 
     private Volunteer saveVolunteer(VolunteerRequest volunteerRequest){
         log.info("Volunteer save request received.");
-        var optionalVolunteer = volunteerMapper.getVolunteer(volunteerRequest);
+        Optional<Volunteer> optionalVolunteer = volunteerMapper.getVolunteer(volunteerRequest);
         return optionalVolunteer.map(volunteerRepository::save).orElseThrow(NotFoundException::new);
     }
 
