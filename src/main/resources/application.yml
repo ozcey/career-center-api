@@ -5,7 +5,7 @@ spring:
     platform: postgres
     username: ${DB_USER}
     password: ${DB_PASS}
-    url: jdbc:postgresql://localhost:5432/career_db
+    url: ${DB_URL}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
