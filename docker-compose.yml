@@ -10,26 +10,27 @@ services:
       - "5000:5000"
     restart: always
     depends_on:
-      - postgres
+      - db
     environment:
-      POSTGRES_HOSTNAME: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: career_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Password
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_HOST: ${DB_HOST}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
     networks:
       - career-center-api-network
 
-  postgres:
+  db:
     image: postgres:13
     ports:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_ROOT_PASSWORD: Password
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Password
-      POSTGRES_DB: career_db
+      POSTGRES_USER:  ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB:  ${DB_NAME}
     volumes:
       - career-db-volume:/var/lib/postgresql/data
     networks:
