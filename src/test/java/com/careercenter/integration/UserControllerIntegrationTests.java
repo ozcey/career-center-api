@@ -55,31 +55,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
                 .webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .build();
-        setUsers();
-    }
-
-    private void setUsers(){
-        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
-        HashSet<Role> adminRoles = new HashSet<>();
-        adminRoles.add(adminRole);
-        User adminUser = User.builder()
-                .name("Admin User")
-                .username("admin")
-                .email("admin@gmail.com")
-                .password("password")
-                .roles(adminRoles)
-                .build();
-        Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
-        HashSet<Role> userRoles = new HashSet<>();
-        userRoles.add(userRole);
-        User user = User.builder()
-                .name("Seed User")
-                .username("seed")
-                .email("seed@gmail.com")
-                .password("password")
-                .roles(userRoles)
-                .build();
-        userList = Arrays.asList(adminUser, user);
+        userList = IntegrationTestData.setUserList(roleRepository);
     }
 
     @Test

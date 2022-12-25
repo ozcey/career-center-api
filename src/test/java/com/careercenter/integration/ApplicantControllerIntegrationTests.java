@@ -50,45 +50,7 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
                 .webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .build();
-        setApplicantList();
-    }
-
-    private void setApplicantList() {
-        Applicant applicant = Applicant.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john@gmail.com")
-                .phone("1234567890")
-                .age(30)
-                .category(new String[]{"IT", "Education"})
-                .degree("B.S")
-                .gender("Male")
-                .languages(new String[]{"English"})
-                .address(Address.builder()
-                        .street("123 Main St")
-                        .city("Atlanta")
-                        .state("GA")
-                        .zipcode("12345")
-                        .build())
-                .build();
-        Applicant applicant2 = Applicant.builder()
-                .firstName("Mark")
-                .lastName("Johnson")
-                .email("mark@gmail.com")
-                .phone("1234560000")
-                .age(35)
-                .category(new String[]{"IT", "Education"})
-                .degree("B.S")
-                .gender("Male")
-                .languages(new String[]{"English"})
-                .address(Address.builder()
-                        .street("111 Elm Dr")
-                        .city("Atlanta")
-                        .state("GA")
-                        .zipcode("11456")
-                        .build())
-                .build();
-        applicantList = Arrays.asList(applicant, applicant2);
+        applicantList = IntegrationTestData.setApplicantList();
     }
 
     @Test
