@@ -58,7 +58,7 @@ public class AuthService {
         return optionalUser.map(user -> {
             user.setRoles(roles);
             userRepository.save(user);
-            log.info("User created successfully");
+            log.info("User registered successfully");
             return ResponseEntity.ok(new ResponseMessage(Constants.SignupMessage.getName()));
         }).orElseThrow(NotFoundException::new);
     }
