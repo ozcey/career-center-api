@@ -17,10 +17,11 @@ import org.hibernate.annotations.NaturalId;
 @AllArgsConstructor
 @Entity
 @Table(name = "roles")
+@SequenceGenerator(name = "roles_id_seq", sequenceName = "roles_id_seq", allocationSize = 1, initialValue = 1)
 public class Role {
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)

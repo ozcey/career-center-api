@@ -5,9 +5,10 @@ import com.careercenter.entities.Applicant;
 import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
 import com.careercenter.exception.NotFoundException;
+import com.careercenter.model.AddressRequest;
+import com.careercenter.model.ApplicantRequest;
 import com.careercenter.model.RoleName;
 import com.careercenter.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -53,26 +54,53 @@ public class IntegrationTestData {
         return Arrays.asList(applicant, applicant2);
     }
 
+    public static ApplicantRequest getApplicantRequest(){
+        return ApplicantRequest.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("john@gmail.com")
+                .phone("1234567890")
+                .age(30)
+                .category(new String[]{"IT", "Education"})
+                .degree("B.S")
+                .gender("Male")
+                .languages(new String[]{"English"})
+                .address(AddressRequest.builder()
+                        .street("123 Main St")
+                        .city("Atlanta")
+                        .state("GA")
+                        .zipcode("12345")
+                        .build())
+                .build();
+    }
+
     public static List<User> setUserList(RoleRepository roleRepository){
+        List<User> userList = setUsersWithoutRoles();
+//        set admin role to user at index 0
         Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
         HashSet<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
+        userList.get(0).setRoles(adminRoles);
+//        set user role to user at index 1
+        Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
+        HashSet<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        userList.get(1).setRoles(userRoles);
+        return userList;
+    }
+
+    public static List<User> setUsersWithoutRoles(){
         User adminUser = User.builder()
                 .name("Admin User")
                 .username("admin")
                 .email("admin@gmail.com")
                 .password("password")
-                .roles(adminRoles)
                 .build();
-        Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
-        HashSet<Role> userRoles = new HashSet<>();
-        userRoles.add(userRole);
         User user = User.builder()
                 .name("Seed User")
                 .username("seed")
                 .email("seed@gmail.com")
                 .password("password")
-                .roles(userRoles)
                 .build();
         return Arrays.asList(adminUser, user);
     }

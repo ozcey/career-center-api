@@ -1,9 +1,6 @@
 package com.careercenter.integration;
 
-import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
-import com.careercenter.exception.NotFoundException;
-import com.careercenter.model.RoleName;
 import com.careercenter.repositories.RoleRepository;
 import com.careercenter.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -24,16 +22,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@WithMockUser(username = "admin", password = "password", roles = "ADMIN")
 class UserControllerIntegrationTests extends AbstractContainerBaseTest {
 
     private MockMvc mockMvc;
@@ -53,7 +46,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
-                .apply(springSecurity())
                 .build();
         userList = IntegrationTestData.setUserList(roleRepository);
     }
@@ -63,7 +55,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         userRepository.saveAll(userList);
 
         ResultActions response = mockMvc.perform(get("/users")
-                        .with(user("admin"))
+
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -77,7 +69,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         User savedUser = userRepository.save(userList.get(0));
 
         ResultActions response = mockMvc.perform(get("/users/id/{id}", savedUser.getId())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -91,7 +82,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         User savedUser = userRepository.save(userList.get(0));
 
         ResultActions response = mockMvc.perform(get("/users/email/{email}", savedUser.getEmail())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -105,7 +95,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         User savedUser = userRepository.save(userList.get(0));
 
         ResultActions response = mockMvc.perform(get("/users/username/{username}", savedUser.getUsername())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -121,7 +110,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         savedUser.setName("John Doe");
 
         ResultActions response = mockMvc.perform(put("/users/update")
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(savedUser))
         );
@@ -136,7 +124,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         User savedUser = userRepository.save(userList.get(0));
 
         ResultActions response = mockMvc.perform(delete("/users/delete/{id}", savedUser.getId())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 

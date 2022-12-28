@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,14 @@ public class AuthController {
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Log in to Account", description = "Pass your username and password")
-	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<LoginResponse> login(@Valid @NotNull @RequestBody LoginRequest loginRequest) {
 		return authService.login(loginRequest);
 	}
 
 	@PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(summary = "Create an Account", description = "Role must be ROLE_USER, Password must be at least 8 characters and "
 			+ "username must be at least 3 characters ")
-	public ResponseEntity<ResponseMessage> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
+	public ResponseEntity<ResponseMessage> signup(@Valid @NotNull @RequestBody SignUpRequest signUpRequest) {
 		return authService.signup(signUpRequest);
 	}
 }
