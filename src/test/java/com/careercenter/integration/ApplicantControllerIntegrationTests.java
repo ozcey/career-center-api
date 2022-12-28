@@ -1,6 +1,5 @@
 package com.careercenter.integration;
 
-import com.careercenter.entities.Address;
 import com.careercenter.entities.Applicant;
 import com.careercenter.repositories.ApplicantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,16 +21,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-
-import java.util.Arrays;
 import java.util.List;
 
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WithMockUser(username = "admin", password = "password", roles = "ADMIN")
 class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
 
     private MockMvc mockMvc;
@@ -48,7 +43,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         applicantRepository.deleteAll();
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
-                .apply(springSecurity())
                 .build();
         applicantList = IntegrationTestData.setApplicantList();
     }
@@ -58,7 +52,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         applicantRepository.saveAll(applicantList);
 
         ResultActions response = mockMvc.perform(get("/applicant")
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -72,7 +65,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         Applicant savedApplicant = applicantRepository.save(applicantList.get(0));
 
         ResultActions response = mockMvc.perform(get("/applicant/id/{id}", savedApplicant.getId())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -87,7 +79,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         Applicant savedApplicant = applicantRepository.save(applicantList.get(0));
 
         ResultActions response = mockMvc.perform(get("/applicant/email/{email}", savedApplicant.getEmail())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -101,7 +92,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
     void createApplicant() throws Exception {
         Applicant applicant = applicantList.get(0);
         ResultActions response = mockMvc.perform(post("/applicant/save")
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(applicant))
         );
@@ -121,7 +111,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         savedApplicant.setPhone("3456789012");
 
         ResultActions response = mockMvc.perform(put("/applicant/update")
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(savedApplicant))
         );
@@ -138,7 +127,6 @@ class ApplicantControllerIntegrationTests extends AbstractContainerBaseTest {
         Applicant savedApplicant = applicantRepository.save(applicantList.get(0));
 
         ResultActions response = mockMvc.perform(delete("/applicant/delete/{id}", savedApplicant.getId())
-                .with(user("admin"))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
