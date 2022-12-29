@@ -24,22 +24,10 @@ The project link here [GitHub link](https://github.com/ozcey/career-center-api.g
 
 
 ## Running App
-### Running locally
+### Running on Docker
 * Clone the repository or download the zip file
 * Import the project into IntelliJ IDEA or Eclipse
-* Locate the Spring boot application runner file
-* Click Run on the file after right click 
-
-or
-* Navigate to project directory
-* Open terminal
-* Run the following command
-
-```
-mvn spring-boot:run
-```
-
-### Running on Docker
+* Create .env file in the project directory and put all environment variables defined in docker-compose.yml file to .env
 * Navigate to project directory
 * Open terminal
 * Run the following command
@@ -47,4 +35,3 @@ mvn spring-boot:run
 ```
 docker-compose up
 ```
-The app will start on port 5000.

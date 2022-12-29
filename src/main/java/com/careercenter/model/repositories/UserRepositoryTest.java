@@ -1,9 +1,11 @@
-package com.careercenter.repositories;
+package com.careercenter.model.repositories;
 
 import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
 import com.careercenter.integration.IntegrationTestData;
 import com.careercenter.model.RoleName;
+import com.careercenter.repositories.RoleRepository;
+import com.careercenter.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,8 @@ class UserRepositoryTest {
 
         List<User> users = userRepository.findAll();
 
-        assertThat(users).isNotEmpty();
-        assertThat(users).hasSize(userList.size());
+        Assertions.assertThat(users).isNotEmpty();
+        Assertions.assertThat(users).hasSize(userList.size());
     }
 
     @Test
@@ -49,8 +51,8 @@ class UserRepositoryTest {
 
         User entity = userRepository.findUserByEmail(user.getEmail()).get();
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getEmail()).isEqualTo(user.getEmail());
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test
@@ -60,8 +62,8 @@ class UserRepositoryTest {
 
         User entity = userRepository.findUserByUsername(user.getUsername()).get();
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getUsername()).isEqualTo(user.getUsername());
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
@@ -71,8 +73,8 @@ class UserRepositoryTest {
 
         User entity = userRepository.findUserById(savedUser.getId()).get();
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getId()).isEqualTo(savedUser.getId());
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getId()).isEqualTo(savedUser.getId());
     }
 
     @Test
@@ -82,7 +84,7 @@ class UserRepositoryTest {
 
         Boolean usernameExists = userRepository.existsByUsername(user.getUsername());
 
-        assertThat(usernameExists).isTrue();
+        Assertions.assertThat(usernameExists).isTrue();
     }
 
     @Test
@@ -92,7 +94,7 @@ class UserRepositoryTest {
 
         Boolean emailExists = userRepository.existsByEmail(user.getEmail());
 
-        assertThat(emailExists).isTrue();
+        Assertions.assertThat(emailExists).isTrue();
     }
 
     @Test
@@ -101,9 +103,9 @@ class UserRepositoryTest {
 
         User savedUser = userRepository.save(user);
 
-        assertThat(savedUser).isNotNull();
-        assertThat(savedUser.getId()).isNotNull();
-        assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
+        Assertions.assertThat(savedUser).isNotNull();
+        Assertions.assertThat(savedUser.getId()).isNotNull();
+        Assertions.assertThat(user.getEmail()).isEqualTo(savedUser.getEmail());
     }
 
     @Test
@@ -115,10 +117,10 @@ class UserRepositoryTest {
 
         User entity = userRepository.save(savedUser);
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getId()).isEqualTo(savedUser.getId());
-        assertThat(entity.getName()).isEqualTo(savedUser.getName());
-        assertThat(entity.getPassword()).isEqualTo(savedUser.getPassword());
+        Assertions.assertThat(entity).isNotNull();
+        Assertions.assertThat(entity.getId()).isEqualTo(savedUser.getId());
+        Assertions.assertThat(entity.getName()).isEqualTo(savedUser.getName());
+        Assertions.assertThat(entity.getPassword()).isEqualTo(savedUser.getPassword());
     }
 
     @Test
@@ -128,7 +130,7 @@ class UserRepositoryTest {
 
         userRepository.deleteById(savedUser.getId());
 
-        assertThrows(NoSuchElementException.class, () -> {
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
            User entity = userRepository.findUserById(savedUser.getId()).orElseThrow(NoSuchElementException::new);
         });
     }
