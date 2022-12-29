@@ -13,6 +13,7 @@ import com.careercenter.repositories.RoleRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IntegrationTestData {
 
@@ -103,5 +104,19 @@ public class IntegrationTestData {
                 .password("password")
                 .build();
         return Arrays.asList(adminUser, user);
+    }
+
+    public static void setUserRoles(User user, String role){
+        Set<Role> roles = new HashSet<>();
+        Role userRole;
+        if(role.equals("ROLE_ADMIN")){
+           userRole = Role.builder().name(RoleName.ROLE_ADMIN).build();
+        } else if(role.equals("ROLE_USER")){
+            userRole = Role.builder().name(RoleName.ROLE_USER).build();
+        } else {
+            throw new NotFoundException("user role");
+        }
+        roles.add(userRole);
+        user.setRoles(roles);
     }
 }
