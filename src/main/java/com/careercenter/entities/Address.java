@@ -22,11 +22,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "address")
-@SequenceGenerator(name = "address_id_seq", sequenceName = "address_id_seq", allocationSize = 1, initialValue = 5001)
 public class Address {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Size(max = 100)

@@ -28,11 +28,10 @@ import org.hibernate.annotations.Type;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "applicants")
-@SequenceGenerator(name = "applicants_id_seq", sequenceName = "applicants_id_seq", allocationSize = 1, initialValue = 30001)
 public class Applicant {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "applicants_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")

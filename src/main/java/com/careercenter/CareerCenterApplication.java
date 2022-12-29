@@ -16,12 +16,13 @@ public class CareerCenterApplication {
 		SpringApplication.run(CareerCenterApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner saveRoles(RoleRepository roleRepository) {
-		return args -> {
-			roleRepository.save(new Role(1L, RoleName.ROLE_ADMIN));
-			roleRepository.save(new Role(2L, RoleName.ROLE_USER));
-		};
-	}
+//	@Bean
+//	public CommandLineRunner saveRoles(RoleRepository roleRepository) {
+//		return args -> {
+//			roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
+//			roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
+//
+//		};
+//	}
 
 }

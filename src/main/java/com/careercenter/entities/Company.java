@@ -30,11 +30,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "companies")
-@SequenceGenerator(name = "company_id_seq", sequenceName = "company_id_seq", allocationSize = 1, initialValue = 1001)
 public class Company {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Size(min = 2, max = 50, message = "Name must be at least 2 characters.")
