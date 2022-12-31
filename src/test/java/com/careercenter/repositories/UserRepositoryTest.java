@@ -29,8 +29,8 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-//        roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
-//        roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
+        roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
+        roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
         userList = IntegrationTestData.setUserList(roleRepository);
     }
 
