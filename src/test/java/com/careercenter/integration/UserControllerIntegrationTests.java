@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,6 +38,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     @Autowired
     private ObjectMapper objectMapper;
     private List<User> userList;
+    private static final String BASE_URI = "/user";
 
     @BeforeEach
     void setUp() {
@@ -54,7 +54,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     void retrieveAllUsers() throws Exception {
         userRepository.saveAll(userList);
 
-        ResultActions response = mockMvc.perform(get("/users")
+        ResultActions response = mockMvc.perform(get(BASE_URI)
 
                 .contentType(MediaType.APPLICATION_JSON)
         );
@@ -68,7 +68,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     void retrieveUserById() throws Exception {
         User savedUser = userRepository.save(userList.get(0));
 
-        ResultActions response = mockMvc.perform(get("/users/id/{id}", savedUser.getId())
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/id/{id}", savedUser.getId())
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -81,7 +81,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     void retrieveUserByEmail() throws Exception {
         User savedUser = userRepository.save(userList.get(0));
 
-        ResultActions response = mockMvc.perform(get("/users/email/{email}", savedUser.getEmail())
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/email/{email}", savedUser.getEmail())
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -94,7 +94,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     void retrieveUserByUsername() throws Exception {
         User savedUser = userRepository.save(userList.get(0));
 
-        ResultActions response = mockMvc.perform(get("/users/username/{username}", savedUser.getUsername())
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/username/{username}", savedUser.getUsername())
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -109,7 +109,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         User savedUser = userRepository.save(user);
         savedUser.setName("John Doe");
 
-        ResultActions response = mockMvc.perform(put("/users/update")
+        ResultActions response = mockMvc.perform(put(BASE_URI + "/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(savedUser))
         );
@@ -123,7 +123,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     void deleteUser() throws Exception {
         User savedUser = userRepository.save(userList.get(0));
 
-        ResultActions response = mockMvc.perform(delete("/users/delete/{id}", savedUser.getId())
+        ResultActions response = mockMvc.perform(delete(BASE_URI + "/delete/{id}", savedUser.getId())
                 .contentType(MediaType.APPLICATION_JSON)
         );
 

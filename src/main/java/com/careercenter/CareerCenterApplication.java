@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
 @SpringBootApplication
 public class CareerCenterApplication {
 
@@ -19,9 +20,12 @@ public class CareerCenterApplication {
 	@Bean
 	public CommandLineRunner saveRoles(RoleRepository roleRepository) {
 		return args -> {
-			roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
-			roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
-
+			Boolean adminRoleExists = roleRepository.existsByName(RoleName.ROLE_ADMIN);
+			Boolean userRoleExists = roleRepository.existsByName(RoleName.ROLE_USER);
+			if(!adminRoleExists && !userRoleExists){
+				roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
+				roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
+			}
 		};
 	}
 

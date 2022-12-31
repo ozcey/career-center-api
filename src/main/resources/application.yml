@@ -20,6 +20,9 @@ server:
    port: 5000
    servlet:
      context-path: /career-center/api
+   tomcat:
+     relaxed-query-chars: '|,{,},[,]'
+
 
 app:
   jwtSecret: ${JWT_SECRET}

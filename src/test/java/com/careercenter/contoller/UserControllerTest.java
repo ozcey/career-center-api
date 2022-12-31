@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -46,6 +45,7 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     private List<User> userList;
+    private static final String BASE_URI = "/user";
 
     @BeforeEach
     void setUp() {
@@ -75,7 +75,7 @@ class UserControllerTest {
 
         given(userService.findAllUsers()).willReturn(userResponseList);
 
-        ResultActions response = mockMvc.perform(get("/users")
+        ResultActions response = mockMvc.perform(get(BASE_URI)
         );
 
         response.andDo(print())
@@ -90,8 +90,7 @@ class UserControllerTest {
         long userId = 1L;
         given(userService.findUserById(userId)).willReturn(user);
 
-        ResultActions response = mockMvc.perform(get("/users/id/{id}", userId)
-        );
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/id/{id}", userId));
 
         response.andDo(print())
                 .andExpect(status().isOk())
@@ -103,8 +102,7 @@ class UserControllerTest {
         long userId = 1L;
         given(userService.findUserById(userId)).willThrow(new NotFoundException());
 
-        ResultActions response = mockMvc.perform(get("/users/id/{id}", userId)
-        );
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/id/{id}", userId));
 
         response.andDo(print())
                 .andExpect(status().isNotFound())
@@ -116,8 +114,7 @@ class UserControllerTest {
         User user = userList.get(0);
         given(userService.findUserByEmail(user.getEmail())).willReturn(user);
 
-        ResultActions response = mockMvc.perform(get("/users/email/{email}", user.getEmail())
-        );
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/email/{email}", user.getEmail()));
 
         response.andDo(print())
                 .andExpect(status().isOk())
@@ -129,8 +126,7 @@ class UserControllerTest {
         User user = userList.get(0);
         given(userService.findUserByUsername(user.getUsername())).willReturn(user);
 
-        ResultActions response = mockMvc.perform(get("/users/username/{username}", user.getUsername())
-        );
+        ResultActions response = mockMvc.perform(get(BASE_URI + "/username/{username}", user.getUsername()));
 
         response.andDo(print())
                 .andExpect(status().isOk())
@@ -146,7 +142,7 @@ class UserControllerTest {
         given(userService.updateUser(ArgumentMatchers.any(User.class)))
                 .willAnswer((invocationOnMock -> invocationOnMock.getArgument(0)));
 
-        ResultActions response = mockMvc.perform(put("/users/update")
+        ResultActions response = mockMvc.perform(put(BASE_URI + "/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user))
         );
@@ -169,7 +165,7 @@ class UserControllerTest {
         given(userService.updateUser(ArgumentMatchers.any(User.class)))
                 .willThrow(new NotFoundException());
 
-        ResultActions response = mockMvc.perform(put("/users/update")
+        ResultActions response = mockMvc.perform(put(BASE_URI + "/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(objectMapper.writeValueAsString(user))
@@ -187,7 +183,7 @@ class UserControllerTest {
 
         given(userService.deleteUser(userId)).willReturn(message);
 
-        ResultActions response = mockMvc.perform(delete("/users/delete/{id}", userId));
+        ResultActions response = mockMvc.perform(delete(BASE_URI + "/delete/{id}", userId));
 
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is(String.format("User with id: %s deleted successfully.", userId))))

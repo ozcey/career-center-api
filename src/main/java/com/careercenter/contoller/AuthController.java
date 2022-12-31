@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Auth Controller", description = "Auth API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

@@ -3,6 +3,8 @@ package com.careercenter.contoller;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.entities.User;
 import com.careercenter.model.UserResponse;
+import com.careercenter.security.LoggedInUser;
+import com.careercenter.security.UserPrincipal;
 import com.careercenter.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,7 +24,7 @@ import java.util.List;
 @RestController
 @Tag(name = "User Controller", description = "User API")
 @ApiResponse(responseCode = "200", description = "Success")
-@RequestMapping("/users")
+@RequestMapping(value = "/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -33,6 +35,19 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<UserResponse>> retrieveAllUsers() {
         return ResponseEntity.ok().body(userService.findAllUsers());
+    }
+
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Retrieve currently logged in user", description = "No need to pass parameters")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserResponse> getLoggedInUser(@LoggedInUser UserPrincipal loggedInUser){
+        UserResponse user = UserResponse.builder()
+                .id(loggedInUser.getId())
+                .name(loggedInUser.getName())
+                .username(loggedInUser.getUsername())
+                .email(loggedInUser.getEmail())
+                .build();
+        return ResponseEntity.ok().body(user);
     }
 
     @GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
