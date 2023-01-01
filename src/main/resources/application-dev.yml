@@ -12,3 +12,12 @@ spring:
       hibernate.show_sql: false
       hibernate.use_sql_comments: false
       hibernate.format_sql: false
+
+
+server:
+  port: 5000
+  servlet:
+    context-path: /career-center/api
+  tomcat:
+    relaxed-query-chars: '|,{,},[,]'
+

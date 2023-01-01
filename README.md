@@ -24,6 +24,20 @@ The project link here [GitHub link](https://github.com/ozcey/career-center-api.g
 
 
 ## Running App
+
+### Running locally
+* Clone the repository or download the zip file
+* Import the project into IntelliJ IDEA or Eclipse
+* Create .env file in the project directory and put all environment variables defined in application-dev.yml file in .env
+* Set active profile as dev in application.yml file
+* Navigate to project directory
+* Open terminal
+* Run the following command
+
+```
+ mvn spring-boot:run
+```
+
 ### Running on Docker
 * Clone the repository or download the zip file
 * Import the project into IntelliJ IDEA or Eclipse

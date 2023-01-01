@@ -20,6 +20,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      ACTIVE_PROFILE: ${ACTIVE_PROFILE}
     networks:
       - career-center-api-network
 
