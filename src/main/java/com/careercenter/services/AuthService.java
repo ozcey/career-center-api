@@ -35,6 +35,7 @@ public class AuthService {
     private final UserMapper userMapper;
 
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
+        log.info("Login request received.");
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -43,6 +44,7 @@ public class AuthService {
     }
 
     public ResponseEntity<ResponseMessage> signup(SignUpRequest signUpRequest) {
+        log.info("Sign up request received.");
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage(Constants.UsernameMessage.getName()), HttpStatus.BAD_REQUEST);
         }
