@@ -1,4 +1,3 @@
-# configs for railway
 spring:
   datasource:
     platform: postgres
