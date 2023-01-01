@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Component
-@Profile("prod")
+@Profile("dev")
 @RequiredArgsConstructor
 public class LoadRoleData {
 
