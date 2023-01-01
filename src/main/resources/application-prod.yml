@@ -1,10 +1,10 @@
-# docker
+# configs for railway
 spring:
   datasource:
     platform: postgres
-    username: ${DB_USER}
-    password: ${DB_PASS}
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${PROD_DB_USER}
+    password: ${PROD_DB_PASS}
+    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
@@ -14,10 +14,33 @@ spring:
       hibernate.use_sql_comments: false
       hibernate.format_sql: false
 
-
 server:
-  port: 5000
-  servlet:
-    context-path: /career-center/api
-  tomcat:
-    relaxed-query-chars: '|,{,},[,]'
+   port: ${PORT}
+   tomcat:
+     relaxed-query-chars: '|,{,},[,]'
+
+
+
+# docker
+#spring:
+#  datasource:
+#    platform: postgres
+#    username: ${DB_USER}
+#    password: ${DB_PASS}
+#    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate.show_sql: false
+#      hibernate.use_sql_comments: false
+#      hibernate.format_sql: false
+#
+#
+#server:
+#  port: 5000
+#  servlet:
+#    context-path: /career-center/api
+#  tomcat:
+#    relaxed-query-chars: '|,{,},[,]'
