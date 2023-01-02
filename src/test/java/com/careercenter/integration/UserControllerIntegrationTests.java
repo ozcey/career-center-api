@@ -1,7 +1,6 @@
 package com.careercenter.integration;
 
 import com.careercenter.entities.User;
-import com.careercenter.repositories.RoleRepository;
 import com.careercenter.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

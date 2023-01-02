@@ -50,18 +50,4 @@ public class User {
 	@Column(name = "password")
 	private String password;
 
-	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<Role>();
-
-	public User(Long id, String name, String username, String email, String password) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-	}
-
 }

@@ -1,11 +1,9 @@
 package com.careercenter.repositories;
 
-import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
 import com.careercenter.integration.IntegrationTestData;
 import com.careercenter.model.RoleName;
-import com.careercenter.repositories.RoleRepository;
-import com.careercenter.repositories.UserRepository;
+
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

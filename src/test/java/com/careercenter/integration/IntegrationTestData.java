@@ -2,13 +2,11 @@ package com.careercenter.integration;
 
 import com.careercenter.entities.Address;
 import com.careercenter.entities.Applicant;
-import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.AddressRequest;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.model.RoleName;
-import com.careercenter.repositories.RoleRepository;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -51,6 +51,12 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findUserByUsername(username));
     }
 
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create User", description = "")
+    public ResponseEntity<User> createUser(@Valid @NotNull @RequestBody @Parameter(description = "Pass an user as request") User user) {
+        return ResponseEntity.ok().body(userService.saveUser(user));
+    }
+
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update User Data", description = "User Id must be in request.")
     public ResponseEntity<User> updateUser(@Valid @NotNull @RequestBody @Parameter(description = "Pass an user as request") User user) {

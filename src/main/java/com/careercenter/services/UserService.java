@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,6 +40,12 @@ public class UserService {
     public User findUserById(Long userId) {
         return userRepository.findUserById(userId)
                 .orElseThrow(() -> new NotFoundException(Constants.UserID.getName()));
+    }
+
+    public User saveUser(User user) {
+        log.info("User save request received.");
+        Optional<User> optionalUser = Optional.of(user);
+        return optionalUser.map(userRepository::save).orElseThrow(NotFoundException::new);
     }
 
     public User updateUser(User user) {
