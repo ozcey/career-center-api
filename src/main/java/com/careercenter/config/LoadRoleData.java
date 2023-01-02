@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @Component
-@Profile("dev")
+@Profile("prod")
 @RequiredArgsConstructor
 public class LoadRoleData {
 
@@ -22,9 +22,13 @@ public class LoadRoleData {
 
     @EventListener
     public void loadData(ApplicationReadyEvent readyEvent) {
-        List<RoleName> roleNames = Arrays.asList(RoleName.ROLE_ADMIN, RoleName.ROLE_USER);
-        for(RoleName roleName: roleNames){
-            roleRepository.save(Role.builder().name(roleName).build());
+        long count = roleRepository.count();
+        if(count == 0){
+            List<RoleName> roleNames = Arrays.asList(RoleName.ROLE_ADMIN, RoleName.ROLE_USER);
+            for(RoleName roleName: roleNames){
+                roleRepository.save(Role.builder().name(roleName).build());
+            }
         }
+
     }
 }
