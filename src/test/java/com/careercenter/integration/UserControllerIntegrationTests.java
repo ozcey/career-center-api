@@ -31,8 +31,6 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
     private ObjectMapper objectMapper;
     private List<User> userList;
     private static final String BASE_URI = "/user";
@@ -44,7 +42,7 @@ class UserControllerIntegrationTests extends AbstractContainerBaseTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
-        userList = IntegrationTestData.setUserList(roleRepository);
+        userList = IntegrationTestData.setUsersWithoutRoles();
     }
 
     @Test

@@ -72,22 +72,6 @@ public class IntegrationTestData {
                         .build())
                 .build();
     }
-
-    public static List<User> setUserList(RoleRepository roleRepository){
-        List<User> userList = setUsersWithoutRoles();
-//        set admin role to user at index 0
-        Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
-        HashSet<Role> adminRoles = new HashSet<>();
-        adminRoles.add(adminRole);
-        userList.get(0).setRoles(adminRoles);
-//        set user role to user at index 1
-        Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN).orElseThrow(NotFoundException::new);
-        HashSet<Role> userRoles = new HashSet<>();
-        userRoles.add(userRole);
-        userList.get(1).setRoles(userRoles);
-        return userList;
-    }
-
     public static List<User> setUsersWithoutRoles(){
         User adminUser = User.builder()
                 .name("Admin User")
@@ -102,19 +86,5 @@ public class IntegrationTestData {
                 .password("password")
                 .build();
         return Arrays.asList(adminUser, user);
-    }
-
-    public static void setUserRoles(User user, String role){
-        Set<Role> roles = new HashSet<>();
-        Role userRole;
-        if(role.equals("ROLE_ADMIN")){
-           userRole = Role.builder().name(RoleName.ROLE_ADMIN).build();
-        } else if(role.equals("ROLE_USER")){
-            userRole = Role.builder().name(RoleName.ROLE_USER).build();
-        } else {
-            throw new NotFoundException("user role");
-        }
-        roles.add(userRole);
-        user.setRoles(roles);
     }
 }

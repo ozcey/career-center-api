@@ -2,7 +2,6 @@ package com.careercenter.repositories;
 
 import com.careercenter.entities.User;
 import com.careercenter.integration.IntegrationTestData;
-import com.careercenter.model.RoleName;
 
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,15 +20,11 @@ class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
     private List<User> userList;
 
     @BeforeEach
     void setUp() {
-        roleRepository.save(Role.builder().name(RoleName.ROLE_ADMIN).build());
-        roleRepository.save(Role.builder().name(RoleName.ROLE_USER).build());
-        userList = IntegrationTestData.setUserList(roleRepository);
+        userList = IntegrationTestData.setUsersWithoutRoles();
     }
 
     @Test
