@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import java.util.List;
 @Tag(name = "Company Controller", description = "Company API")
 @ApiResponse(responseCode = "200", description = "Success")
 @RequestMapping(value = "/company")
-@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 @RequiredArgsConstructor
 public class CompanyController {
 

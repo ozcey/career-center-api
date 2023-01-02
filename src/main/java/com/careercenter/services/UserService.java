@@ -9,7 +9,6 @@ import com.careercenter.repositories.UserRepository;
 import com.careercenter.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
     public List<UserResponse> findAllUsers() {
@@ -46,7 +44,6 @@ public class UserService {
     public User updateUser(User user) {
         log.info("User update request received.");
         if (userRepository.existsById(user.getId())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }
         throw new NotFoundException(Constants.User.getName());

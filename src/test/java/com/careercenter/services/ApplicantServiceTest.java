@@ -4,13 +4,9 @@ import com.careercenter.entities.Applicant;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.integration.IntegrationTestData;
 import com.careercenter.mapper.ApplicantMapper;
-import com.careercenter.mapper.UserMapper;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.model.ResponseMessage;
 import com.careercenter.repositories.ApplicantRepository;
-import com.careercenter.repositories.RoleRepository;
-import com.careercenter.repositories.UserRepository;
-import com.careercenter.security.JWTTokenProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,14 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testcontainers.shaded.com.trilead.ssh2.auth.AuthenticationManager;
 
 import static org.mockito.BDDMockito.*;
 import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicantServiceTest {
