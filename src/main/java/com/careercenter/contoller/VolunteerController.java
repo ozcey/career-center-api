@@ -56,24 +56,24 @@ public class VolunteerController {
         return ResponseEntity.ok().body(volunteerService.findVolunteerByEmail(email));
     }
 
-    @GetMapping(value = "/{volunteerId}/company", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Retrieves volunteer and company by volunteer id", description = "Need to pass volunteer id")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<VolunteerResponse> retrieveVolunteerAndCompany(@PathVariable Long volunteerId) {
-        return ResponseEntity.ok().body(volunteerService.findVolunteerAndCompany(volunteerId));
-    }
+//    @GetMapping(value = "/{volunteerId}/company", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Operation(summary = "Retrieves volunteer and company by volunteer id", description = "Need to pass volunteer id")
+//    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//    public ResponseEntity<VolunteerResponse> retrieveVolunteerAndCompany(@PathVariable Long volunteerId) {
+//        return ResponseEntity.ok().body(volunteerService.findVolunteerAndCompany(volunteerId));
+//    }
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a New Volunteer", description = "Create a new Volunteer by passing Volunteer request")
-    public ResponseEntity<VolunteerResponse> createVolunteerAndCompany(@Valid @NotNull @RequestBody SaveVolunteerRequest volunteer) {
-        return ResponseEntity.ok().body(volunteerService.createVolunteer(volunteer));
+    public ResponseEntity<Volunteer> createVolunteerAndCompany(@Valid @NotNull @RequestBody VolunteerRequest volunteer) {
+        return ResponseEntity.ok().body(volunteerService.saveVolunteer(volunteer));
     }
 
     @PutMapping(value = "/{volunteerId}/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update Volunteer Data", description = "Volunteer Id must be in request.")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<VolunteerResponse> updateVolunteer(@PathVariable Long volunteerId,
-                                                             @Valid @NotNull @RequestBody SaveVolunteerRequest volunteer) {
+    public ResponseEntity<Volunteer> updateVolunteer(@PathVariable Long volunteerId,
+                                                             @Valid @NotNull @RequestBody VolunteerRequest volunteer) {
         return ResponseEntity.ok().body(volunteerService.updateVolunteer(volunteerId, volunteer));
     }
 
