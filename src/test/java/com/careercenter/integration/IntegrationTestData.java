@@ -4,10 +4,12 @@ import com.careercenter.entities.Address;
 import com.careercenter.entities.Applicant;
 import com.careercenter.entities.Role;
 import com.careercenter.entities.User;
+import com.careercenter.entities.Volunteer;
 import com.careercenter.exception.NotFoundException;
 import com.careercenter.model.AddressRequest;
 import com.careercenter.model.ApplicantRequest;
 import com.careercenter.model.RoleName;
+import com.careercenter.model.VolunteerRequest;
 import com.careercenter.repositories.RoleRepository;
 
 import java.util.Arrays;
@@ -16,6 +18,38 @@ import java.util.List;
 import java.util.Set;
 
 public class IntegrationTestData {
+	
+	public static List<Volunteer> setVolunteerist() {
+		Volunteer volunteer = Volunteer.builder()
+				.name("John Doe")
+				.email("john@gmail.com")
+				.phone("1234567890")
+				.jobTitle("SDET")
+				.industry("IT")
+				.areaOfInterest("Mentor")
+				.build();
+		
+		Volunteer volunteer2 = Volunteer.builder()
+				.name("Mark Johnson")
+				.email("mark@gmail.com")
+				.phone("1234567890")
+				.jobTitle("Teacher")
+				.industry("Education")
+				.areaOfInterest("Mentor")
+				.build();
+		return Arrays.asList(volunteer, volunteer2);
+	}
+	
+	public static VolunteerRequest getVolunteerRequest() {
+		return VolunteerRequest.builder()
+				.name("John Doe")
+				.email("john@gmail.com")
+				.phone("1234567890")
+				.jobTitle("SDET")
+				.industry("IT")
+				.areaOfInterest("Mentor")
+				.build();
+	}
 
     public static List<Applicant> setApplicantList() {
         Applicant applicant = Applicant.builder()

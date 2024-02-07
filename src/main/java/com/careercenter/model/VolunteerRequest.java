@@ -22,7 +22,6 @@ public class VolunteerRequest {
     @NotNull(message = "Name cannot be null.")
     private String name;
 
-
     @Email(message = "Invalid email address.")
     private String email;
 
