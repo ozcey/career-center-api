@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -17,13 +18,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class VolunteerRequest {
 
-    @Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
-    @NotNull(message = "First Name cannot be null.")
-    private String firstName;
-
-    @Size(min = 2, max = 50, message = "Last Name must be at least 2 characters.")
-    @NotNull(message = "Last Name cannot be null.")
-    private String lastName;
+    @Size(min = 2, max = 50, message = "Name must be at least 2 characters.")
+    @NotNull(message = "Name cannot be null.")
+    private String name;
 
     @Email(message = "Invalid email address.")
     private String email;
@@ -37,15 +34,8 @@ public class VolunteerRequest {
 
     @NotNull(message = "Industry cannot be null.")
     private String industry;
+    
+	@NotNull(message = "Area of Interest cannot be null.")
+	private String areaOfInterest;
 
-    private String[] otherIndustries;
-
-    @NotNull(message = "Years of experience cannot be null.")
-    private int yearsOfExperience;
-
-    private String[] languages;
-
-    @Valid
-    @NotNull
-    private AddressRequest address;
 }

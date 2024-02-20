@@ -34,15 +34,10 @@ public class Volunteer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(min = 2, max = 50, message = "First Name must be at least 2 characters.")
-	@NotNull(message = "First Name cannot be null.")
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Size(min = 2, max = 50, message = "Last Name must be at least 2 characters.")
-	@NotNull(message = "Last Name cannot be null.")
-	@Column(name = "last_name")
-	private String lastName;
+	@Size(min = 2, max = 50, message = "Name must be at least 2 characters.")
+	@NotNull(message = "Name cannot be null.")
+	@Column(name = "name")
+	private String name;
 
 	@NaturalId
 	@Email(message = "Invalid email address.")
@@ -61,21 +56,10 @@ public class Volunteer {
 	@NotNull(message = "Industry cannot be null.")
 	@Column(name = "industry")
 	private String industry;
+	
+	@NotNull(message = "Area of Interest cannot be null.")
+	@Column(name = "area_of_interest")
+	private String areaOfInterest;
 
-	@Column(name = "other_industries", columnDefinition = "text[]")
-	@Type(type = "com.careercenter.utils.SqlStringArrayType")
-	private String[] otherIndustries;
-
-	@NotNull(message = "Years of experience cannot be null.")
-	@Column(name = "experience")
-	private int yearsOfExperience;
-
-	@Column(name = "languages", columnDefinition = "text[]")
-	@Type(type = "com.careercenter.utils.SqlStringArrayType")
-	private String[] languages;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "id")
-	private Address address;
 
 }

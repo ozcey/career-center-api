@@ -2,13 +2,11 @@ package com.careercenter.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import com.careercenter.entities.Company;
+
 import com.careercenter.entities.Volunteer;
 import com.careercenter.mapper.VolunteerMapper;
 import com.careercenter.model.*;
-import com.careercenter.repositories.CompanyRepository;
 import com.careercenter.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +21,7 @@ import com.careercenter.repositories.VolunteerRepository;
 public class VolunteerService {
 
     private final VolunteerRepository volunteerRepository;
-    private final CompanyRepository companyRepository;
-    private final CompanyService companyService;
     private final VolunteerMapper volunteerMapper;
-
-    private static List<Company> companyList;
 
     public List<Volunteer> findAllVolunteers() {
         return volunteerRepository.findAll();
@@ -42,49 +36,18 @@ public class VolunteerService {
         return volunteerRepository.findVolunteerByEmail(email).orElseThrow(() -> new NotFoundException(Constants.Email.getName()));
     }
 
-    public VolunteerResponse findVolunteerAndCompany(Long id) {
-        return volunteerRepository.findVolunteerById(id).map(volunteer -> {
-            List<Company> companies = companyRepository.findByVolunteerId(id);
-            return VolunteerResponse.builder().volunteer(volunteer).companies(companies).build();
-        }).orElseThrow(NotFoundException::new);
-    }
-
-    public VolunteerResponse createVolunteer(SaveVolunteerRequest saveVolunteerRequest){
-        log.info("Volunteer create request received.");
-        Volunteer volunteer = saveVolunteer(saveVolunteerRequest.getVolunteer());
-        long id = volunteer.getId();
-        List<CompanyRequest> companies = saveVolunteerRequest.getCompanies();
-        List<Company> companyList = companies.stream().map(company -> companyService.saveCompany(id, company)).collect(Collectors.toList());
-        return VolunteerResponse.builder()
-                .volunteer(volunteer)
-                .companies(companyList)
-                .build();
-    }
-
-    private Volunteer saveVolunteer(VolunteerRequest volunteerRequest){
+    public Volunteer saveVolunteer(VolunteerRequest volunteerRequest){
         log.info("Volunteer save request received.");
         Optional<Volunteer> optionalVolunteer = volunteerMapper.getVolunteer(volunteerRequest);
         return optionalVolunteer.map(volunteerRepository::save).orElseThrow(NotFoundException::new);
     }
 
-    public VolunteerResponse updateVolunteer(Long volunteerId, SaveVolunteerRequest saveVolunteerRequest){
-        log.info("Volunteer and Company update request received.");
-        Volunteer volunteer = saveVolunteer(volunteerId,saveVolunteerRequest.getVolunteer());
-        List<Company> cmpnylist = companyService.findCompanyByVolunteerId(volunteerId);
-        List<CompanyRequest> companies = saveVolunteerRequest.getCompanies();
-        cmpnylist.forEach(c -> companyList =  companies.stream().map(company -> companyService.updateCompany(c.getId(), company)).collect(Collectors.toList()));
-        return VolunteerResponse.builder()
-                .volunteer(volunteer)
-                .companies(companyList)
-                .build();
-    }
-
-    public Volunteer saveVolunteer(Long volunteerId, VolunteerRequest volunteerRequest) {
+    public Volunteer updateVolunteer(Volunteer volunteer) {
         log.info("Volunteer update request received.");
-        return volunteerRepository.findVolunteerById(volunteerId).map(volunteer -> {
-            Optional<Volunteer> optionalVolunteer = volunteerMapper.getUpdatedVolunteer(volunteerRequest, volunteer);
-            return optionalVolunteer.map(volunteerRepository::save).orElseThrow(NotFoundException::new);
-        }).orElseThrow(NotFoundException::new);
+        if(volunteerRepository.existsById(volunteer.getId())) {
+        	return volunteerRepository.save(volunteer);
+        }
+        throw new NotFoundException();
     }
 
     public ResponseMessage deleteVolunteer(Long volunteerId) {
