@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env[.properties]
   profiles:
-    active: ${ACTIVE_PROFILE}
+    active: dev
 
 
 
@@ -15,9 +15,9 @@ server:
 
 
 app:
-  jwtSecret: ${JWT_SECRET}
-  jwtExpiration: ${JWT_EXPIRATION}
-  allowedOrigins: ${ALLOWED_ORIGINS}
+  jwtSecret: iUBL00R20q4PFDnM6BdTC3bC84O
+  jwtExpiration: 604800000
+  allowedOrigins: http://localhost:4200
 
   
  
